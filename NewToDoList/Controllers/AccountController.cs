@@ -22,10 +22,10 @@ namespace NewToDoList.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Login(LoginModel model)
         {
-            if (ModelState.IsValid && Membership.ValidateUser(model.email, model.password))
+            if (ModelState.IsValid && Membership.ValidateUser(model.id, model.password))
             {
-                SessionHelper.SetSession(new UserSession() { email = model.email });
-                FormsAuthentication.SetAuthCookie(model.email, model.remember);
+                SessionHelper.SetSession(new UserSession() { id = model.id });
+                FormsAuthentication.SetAuthCookie(model.id, model.remember);
                 return RedirectToAction("Index", "Home");
             }
             else
