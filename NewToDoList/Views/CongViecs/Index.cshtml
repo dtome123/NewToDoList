@@ -1,0 +1,58 @@
+﻿@model IEnumerable<NewToDoList.Models.CongViec>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.TieuDe)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.NgayBatDau)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.NgayKetKhuc)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TrangThai)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PhamVi)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.TieuDe)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.NgayBatDau)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.NgayKetKhuc)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TrangThai)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PhamVi)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.MaCV }) |
+            @Html.ActionLink("Details", "Details", new { id=item.MaCV }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.MaCV })
+        </td>
+    </tr>
+}
+
+</table>

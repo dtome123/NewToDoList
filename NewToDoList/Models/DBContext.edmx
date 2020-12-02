@@ -1,0 +1,508 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="QLCVModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="BinhLuan">
+          <Key>
+            <PropertyRef Name="MaBL" />
+          </Key>
+          <Property Name="MaBL" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MaCV" Type="int" Nullable="false" />
+          <Property Name="MaNV" Type="int" Nullable="false" />
+          <Property Name="BinhLuan" Type="nvarchar" MaxLength="1000" />
+        </EntityType>
+        <EntityType Name="ChiTietCV_NV">
+          <Key>
+            <PropertyRef Name="MaNV" />
+            <PropertyRef Name="MaCV" />
+          </Key>
+          <Property Name="MaNV" Type="int" Nullable="false" />
+          <Property Name="MaCV" Type="int" Nullable="false" />
+          <Property Name="TrangThai" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ChiTietCV_TT">
+          <Key>
+            <PropertyRef Name="MaCV" />
+            <PropertyRef Name="MaTT" />
+          </Key>
+          <Property Name="MaCV" Type="int" Nullable="false" />
+          <Property Name="MaTT" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CongViec">
+          <Key>
+            <PropertyRef Name="MaCV" />
+          </Key>
+          <Property Name="MaCV" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TieuDe" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="NgayBatDau" Type="datetime" Nullable="false" />
+          <Property Name="NgayKetKhuc" Type="datetime" Nullable="false" />
+          <Property Name="TrangThai" Type="int" Nullable="false" />
+          <Property Name="PhamVi" Type="varchar" MaxLength="8" Nullable="false" />
+        </EntityType>
+        <EntityType Name="NhanVien">
+          <Key>
+            <PropertyRef Name="MaNV" />
+          </Key>
+          <Property Name="MaNV" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="HoTen" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="NgaySinh" Type="datetime" Nullable="false" />
+          <Property Name="Email" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="Password" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="TrangThai" Type="int" Nullable="false" />
+          <Property Name="ChucVu" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Quyen" Type="varchar" MaxLength="3" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PhanQuyen">
+          <Key>
+            <PropertyRef Name="MaQuyen" />
+          </Key>
+          <Property Name="MaQuyen" Type="varchar" MaxLength="3" Nullable="false" />
+          <Property Name="Ten" Type="nvarchar" MaxLength="30" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TapTin">
+          <Key>
+            <PropertyRef Name="MaTT" />
+          </Key>
+          <Property Name="MaTT" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DuongDan" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="NhanVienUp" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="BL_fk_macv">
+          <End Role="CongViec" Type="Self.CongViec" Multiplicity="1" />
+          <End Role="BinhLuan" Type="Self.BinhLuan" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CongViec">
+              <PropertyRef Name="MaCV" />
+            </Principal>
+            <Dependent Role="BinhLuan">
+              <PropertyRef Name="MaCV" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="BL_fk_manv">
+          <End Role="NhanVien" Type="Self.NhanVien" Multiplicity="1" />
+          <End Role="BinhLuan" Type="Self.BinhLuan" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NhanVien">
+              <PropertyRef Name="MaNV" />
+            </Principal>
+            <Dependent Role="BinhLuan">
+              <PropertyRef Name="MaNV" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="CtCvNv_fk_macv">
+          <End Role="CongViec" Type="Self.CongViec" Multiplicity="1" />
+          <End Role="ChiTietCV_NV" Type="Self.ChiTietCV_NV" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CongViec">
+              <PropertyRef Name="MaCV" />
+            </Principal>
+            <Dependent Role="ChiTietCV_NV">
+              <PropertyRef Name="MaCV" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="CtCvNv_fk_manv">
+          <End Role="NhanVien" Type="Self.NhanVien" Multiplicity="1" />
+          <End Role="ChiTietCV_NV" Type="Self.ChiTietCV_NV" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NhanVien">
+              <PropertyRef Name="MaNV" />
+            </Principal>
+            <Dependent Role="ChiTietCV_NV">
+              <PropertyRef Name="MaNV" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="CtCvTt_fk_macv">
+          <End Role="CongViec" Type="Self.CongViec" Multiplicity="1" />
+          <End Role="ChiTietCV_TT" Type="Self.ChiTietCV_TT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CongViec">
+              <PropertyRef Name="MaCV" />
+            </Principal>
+            <Dependent Role="ChiTietCV_TT">
+              <PropertyRef Name="MaCV" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="CtCvTt_fk_matt">
+          <End Role="TapTin" Type="Self.TapTin" Multiplicity="1" />
+          <End Role="ChiTietCV_TT" Type="Self.ChiTietCV_TT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TapTin">
+              <PropertyRef Name="MaTT" />
+            </Principal>
+            <Dependent Role="ChiTietCV_TT">
+              <PropertyRef Name="MaTT" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="nv_fk_role">
+          <End Role="PhanQuyen" Type="Self.PhanQuyen" Multiplicity="1" />
+          <End Role="NhanVien" Type="Self.NhanVien" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PhanQuyen">
+              <PropertyRef Name="MaQuyen" />
+            </Principal>
+            <Dependent Role="NhanVien">
+              <PropertyRef Name="Quyen" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="TT_fk_nv">
+          <End Role="NhanVien" Type="Self.NhanVien" Multiplicity="1" />
+          <End Role="TapTin" Type="Self.TapTin" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NhanVien">
+              <PropertyRef Name="MaNV" />
+            </Principal>
+            <Dependent Role="TapTin">
+              <PropertyRef Name="NhanVienUp" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="SaveLog" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="manv" Type="int" Mode="In" />
+          <Parameter Name="HoatDong" Type="nvarchar" Mode="In" />
+          <Parameter Name="bang" Type="nvarchar" Mode="In" />
+        </Function>
+        <EntityContainer Name="QLCVModelStoreContainer">
+          <EntitySet Name="BinhLuan" EntityType="Self.BinhLuan" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ChiTietCV_NV" EntityType="Self.ChiTietCV_NV" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ChiTietCV_TT" EntityType="Self.ChiTietCV_TT" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CongViec" EntityType="Self.CongViec" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="NhanVien" EntityType="Self.NhanVien" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PhanQuyen" EntityType="Self.PhanQuyen" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TapTin" EntityType="Self.TapTin" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="BL_fk_macv" Association="Self.BL_fk_macv">
+            <End Role="CongViec" EntitySet="CongViec" />
+            <End Role="BinhLuan" EntitySet="BinhLuan" />
+          </AssociationSet>
+          <AssociationSet Name="BL_fk_manv" Association="Self.BL_fk_manv">
+            <End Role="NhanVien" EntitySet="NhanVien" />
+            <End Role="BinhLuan" EntitySet="BinhLuan" />
+          </AssociationSet>
+          <AssociationSet Name="CtCvNv_fk_macv" Association="Self.CtCvNv_fk_macv">
+            <End Role="CongViec" EntitySet="CongViec" />
+            <End Role="ChiTietCV_NV" EntitySet="ChiTietCV_NV" />
+          </AssociationSet>
+          <AssociationSet Name="CtCvNv_fk_manv" Association="Self.CtCvNv_fk_manv">
+            <End Role="NhanVien" EntitySet="NhanVien" />
+            <End Role="ChiTietCV_NV" EntitySet="ChiTietCV_NV" />
+          </AssociationSet>
+          <AssociationSet Name="CtCvTt_fk_macv" Association="Self.CtCvTt_fk_macv">
+            <End Role="CongViec" EntitySet="CongViec" />
+            <End Role="ChiTietCV_TT" EntitySet="ChiTietCV_TT" />
+          </AssociationSet>
+          <AssociationSet Name="CtCvTt_fk_matt" Association="Self.CtCvTt_fk_matt">
+            <End Role="TapTin" EntitySet="TapTin" />
+            <End Role="ChiTietCV_TT" EntitySet="ChiTietCV_TT" />
+          </AssociationSet>
+          <AssociationSet Name="nv_fk_role" Association="Self.nv_fk_role">
+            <End Role="PhanQuyen" EntitySet="PhanQuyen" />
+            <End Role="NhanVien" EntitySet="NhanVien" />
+          </AssociationSet>
+          <AssociationSet Name="TT_fk_nv" Association="Self.TT_fk_nv">
+            <End Role="NhanVien" EntitySet="NhanVien" />
+            <End Role="TapTin" EntitySet="TapTin" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="QLCVModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="BinhLuan">
+          <Key>
+            <PropertyRef Name="MaBL" />
+          </Key>
+          <Property Name="MaBL" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MaCV" Type="Int32" Nullable="false" />
+          <Property Name="MaNV" Type="Int32" Nullable="false" />
+          <Property Name="BinhLuan1" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="CongViec" Relationship="Self.BL_fk_macv" FromRole="BinhLuan" ToRole="CongViec" />
+          <NavigationProperty Name="NhanVien" Relationship="Self.BL_fk_manv" FromRole="BinhLuan" ToRole="NhanVien" />
+        </EntityType>
+        <EntityType Name="ChiTietCV_NV">
+          <Key>
+            <PropertyRef Name="MaNV" />
+            <PropertyRef Name="MaCV" />
+          </Key>
+          <Property Name="MaNV" Type="Int32" Nullable="false" />
+          <Property Name="MaCV" Type="Int32" Nullable="false" />
+          <Property Name="TrangThai" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="CongViec" Relationship="Self.CtCvNv_fk_macv" FromRole="ChiTietCV_NV" ToRole="CongViec" />
+          <NavigationProperty Name="NhanVien" Relationship="Self.CtCvNv_fk_manv" FromRole="ChiTietCV_NV" ToRole="NhanVien" />
+        </EntityType>
+        <EntityType Name="CongViec">
+          <Key>
+            <PropertyRef Name="MaCV" />
+          </Key>
+          <Property Name="MaCV" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TieuDe" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="NgayBatDau" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="NgayKetKhuc" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TrangThai" Type="Int32" Nullable="false" />
+          <Property Name="PhamVi" Type="String" MaxLength="8" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="BinhLuans" Relationship="Self.BL_fk_macv" FromRole="CongViec" ToRole="BinhLuan" />
+          <NavigationProperty Name="ChiTietCV_NV" Relationship="Self.CtCvNv_fk_macv" FromRole="CongViec" ToRole="ChiTietCV_NV" />
+          <NavigationProperty Name="TapTins" Relationship="Self.ChiTietCV_TT" FromRole="CongViec" ToRole="TapTin" />
+        </EntityType>
+        <EntityType Name="NhanVien">
+          <Key>
+            <PropertyRef Name="MaNV" />
+          </Key>
+          <Property Name="MaNV" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="HoTen" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="NgaySinh" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Email" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="TrangThai" Type="Int32" Nullable="false" />
+          <Property Name="ChucVu" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Quyen" Type="String" MaxLength="3" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="BinhLuans" Relationship="Self.BL_fk_manv" FromRole="NhanVien" ToRole="BinhLuan" />
+          <NavigationProperty Name="ChiTietCV_NV" Relationship="Self.CtCvNv_fk_manv" FromRole="NhanVien" ToRole="ChiTietCV_NV" />
+          <NavigationProperty Name="PhanQuyen" Relationship="Self.nv_fk_role" FromRole="NhanVien" ToRole="PhanQuyen" />
+          <NavigationProperty Name="TapTins" Relationship="Self.TT_fk_nv" FromRole="NhanVien" ToRole="TapTin" />
+        </EntityType>
+        <EntityType Name="PhanQuyen">
+          <Key>
+            <PropertyRef Name="MaQuyen" />
+          </Key>
+          <Property Name="MaQuyen" Type="String" MaxLength="3" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Ten" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="NhanViens" Relationship="Self.nv_fk_role" FromRole="PhanQuyen" ToRole="NhanVien" />
+        </EntityType>
+        <EntityType Name="TapTin">
+          <Key>
+            <PropertyRef Name="MaTT" />
+          </Key>
+          <Property Name="MaTT" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DuongDan" Type="String" MaxLength="500" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="NhanVienUp" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="NhanVien" Relationship="Self.TT_fk_nv" FromRole="TapTin" ToRole="NhanVien" />
+          <NavigationProperty Name="CongViecs" Relationship="Self.ChiTietCV_TT" FromRole="TapTin" ToRole="CongViec" />
+        </EntityType>
+        <Association Name="BL_fk_macv">
+          <End Role="CongViec" Type="Self.CongViec" Multiplicity="1" />
+          <End Role="BinhLuan" Type="Self.BinhLuan" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CongViec">
+              <PropertyRef Name="MaCV" />
+            </Principal>
+            <Dependent Role="BinhLuan">
+              <PropertyRef Name="MaCV" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="BL_fk_manv">
+          <End Role="NhanVien" Type="Self.NhanVien" Multiplicity="1" />
+          <End Role="BinhLuan" Type="Self.BinhLuan" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NhanVien">
+              <PropertyRef Name="MaNV" />
+            </Principal>
+            <Dependent Role="BinhLuan">
+              <PropertyRef Name="MaNV" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="CtCvNv_fk_macv">
+          <End Role="CongViec" Type="Self.CongViec" Multiplicity="1" />
+          <End Role="ChiTietCV_NV" Type="Self.ChiTietCV_NV" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CongViec">
+              <PropertyRef Name="MaCV" />
+            </Principal>
+            <Dependent Role="ChiTietCV_NV">
+              <PropertyRef Name="MaCV" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="CtCvNv_fk_manv">
+          <End Role="NhanVien" Type="Self.NhanVien" Multiplicity="1" />
+          <End Role="ChiTietCV_NV" Type="Self.ChiTietCV_NV" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NhanVien">
+              <PropertyRef Name="MaNV" />
+            </Principal>
+            <Dependent Role="ChiTietCV_NV">
+              <PropertyRef Name="MaNV" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="nv_fk_role">
+          <End Role="PhanQuyen" Type="Self.PhanQuyen" Multiplicity="1" />
+          <End Role="NhanVien" Type="Self.NhanVien" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PhanQuyen">
+              <PropertyRef Name="MaQuyen" />
+            </Principal>
+            <Dependent Role="NhanVien">
+              <PropertyRef Name="Quyen" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="TT_fk_nv">
+          <End Role="NhanVien" Type="Self.NhanVien" Multiplicity="1" />
+          <End Role="TapTin" Type="Self.TapTin" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NhanVien">
+              <PropertyRef Name="MaNV" />
+            </Principal>
+            <Dependent Role="TapTin">
+              <PropertyRef Name="NhanVienUp" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ChiTietCV_TT">
+          <End Role="CongViec" Type="Self.CongViec" Multiplicity="*" />
+          <End Role="TapTin" Type="Self.TapTin" Multiplicity="*" />
+        </Association>
+        <EntityContainer Name="QLCVEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="BinhLuans" EntityType="Self.BinhLuan" />
+          <EntitySet Name="ChiTietCV_NV" EntityType="Self.ChiTietCV_NV" />
+          <EntitySet Name="CongViecs" EntityType="Self.CongViec" />
+          <EntitySet Name="NhanViens" EntityType="Self.NhanVien" />
+          <EntitySet Name="PhanQuyens" EntityType="Self.PhanQuyen" />
+          <EntitySet Name="TapTins" EntityType="Self.TapTin" />
+          <AssociationSet Name="BL_fk_macv" Association="Self.BL_fk_macv">
+            <End Role="CongViec" EntitySet="CongViecs" />
+            <End Role="BinhLuan" EntitySet="BinhLuans" />
+          </AssociationSet>
+          <AssociationSet Name="BL_fk_manv" Association="Self.BL_fk_manv">
+            <End Role="NhanVien" EntitySet="NhanViens" />
+            <End Role="BinhLuan" EntitySet="BinhLuans" />
+          </AssociationSet>
+          <AssociationSet Name="CtCvNv_fk_macv" Association="Self.CtCvNv_fk_macv">
+            <End Role="CongViec" EntitySet="CongViecs" />
+            <End Role="ChiTietCV_NV" EntitySet="ChiTietCV_NV" />
+          </AssociationSet>
+          <AssociationSet Name="CtCvNv_fk_manv" Association="Self.CtCvNv_fk_manv">
+            <End Role="NhanVien" EntitySet="NhanViens" />
+            <End Role="ChiTietCV_NV" EntitySet="ChiTietCV_NV" />
+          </AssociationSet>
+          <AssociationSet Name="nv_fk_role" Association="Self.nv_fk_role">
+            <End Role="PhanQuyen" EntitySet="PhanQuyens" />
+            <End Role="NhanVien" EntitySet="NhanViens" />
+          </AssociationSet>
+          <AssociationSet Name="TT_fk_nv" Association="Self.TT_fk_nv">
+            <End Role="NhanVien" EntitySet="NhanViens" />
+            <End Role="TapTin" EntitySet="TapTins" />
+          </AssociationSet>
+          <AssociationSet Name="ChiTietCV_TT" Association="Self.ChiTietCV_TT">
+            <End Role="CongViec" EntitySet="CongViecs" />
+            <End Role="TapTin" EntitySet="TapTins" />
+          </AssociationSet>
+          <FunctionImport Name="SaveLog">
+            <Parameter Name="manv" Mode="In" Type="Int32" />
+            <Parameter Name="HoatDong" Mode="In" Type="String" />
+            <Parameter Name="bang" Mode="In" Type="String" />
+          </FunctionImport>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="QLCVModelStoreContainer" CdmEntityContainer="QLCVEntities">
+          <EntitySetMapping Name="BinhLuans">
+            <EntityTypeMapping TypeName="QLCVModel.BinhLuan">
+              <MappingFragment StoreEntitySet="BinhLuan">
+                <ScalarProperty Name="MaBL" ColumnName="MaBL" />
+                <ScalarProperty Name="MaCV" ColumnName="MaCV" />
+                <ScalarProperty Name="MaNV" ColumnName="MaNV" />
+                <ScalarProperty Name="BinhLuan1" ColumnName="BinhLuan" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ChiTietCV_NV">
+            <EntityTypeMapping TypeName="QLCVModel.ChiTietCV_NV">
+              <MappingFragment StoreEntitySet="ChiTietCV_NV">
+                <ScalarProperty Name="MaNV" ColumnName="MaNV" />
+                <ScalarProperty Name="MaCV" ColumnName="MaCV" />
+                <ScalarProperty Name="TrangThai" ColumnName="TrangThai" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CongViecs">
+            <EntityTypeMapping TypeName="QLCVModel.CongViec">
+              <MappingFragment StoreEntitySet="CongViec">
+                <ScalarProperty Name="MaCV" ColumnName="MaCV" />
+                <ScalarProperty Name="TieuDe" ColumnName="TieuDe" />
+                <ScalarProperty Name="NgayBatDau" ColumnName="NgayBatDau" />
+                <ScalarProperty Name="NgayKetKhuc" ColumnName="NgayKetKhuc" />
+                <ScalarProperty Name="TrangThai" ColumnName="TrangThai" />
+                <ScalarProperty Name="PhamVi" ColumnName="PhamVi" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="NhanViens">
+            <EntityTypeMapping TypeName="QLCVModel.NhanVien">
+              <MappingFragment StoreEntitySet="NhanVien">
+                <ScalarProperty Name="MaNV" ColumnName="MaNV" />
+                <ScalarProperty Name="HoTen" ColumnName="HoTen" />
+                <ScalarProperty Name="NgaySinh" ColumnName="NgaySinh" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="TrangThai" ColumnName="TrangThai" />
+                <ScalarProperty Name="ChucVu" ColumnName="ChucVu" />
+                <ScalarProperty Name="Quyen" ColumnName="Quyen" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PhanQuyens">
+            <EntityTypeMapping TypeName="QLCVModel.PhanQuyen">
+              <MappingFragment StoreEntitySet="PhanQuyen">
+                <ScalarProperty Name="MaQuyen" ColumnName="MaQuyen" />
+                <ScalarProperty Name="Ten" ColumnName="Ten" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TapTins">
+            <EntityTypeMapping TypeName="QLCVModel.TapTin">
+              <MappingFragment StoreEntitySet="TapTin">
+                <ScalarProperty Name="MaTT" ColumnName="MaTT" />
+                <ScalarProperty Name="DuongDan" ColumnName="DuongDan" />
+                <ScalarProperty Name="NhanVienUp" ColumnName="NhanVienUp" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="ChiTietCV_TT" TypeName="QLCVModel.ChiTietCV_TT" StoreEntitySet="ChiTietCV_TT">
+            <EndProperty Name="CongViec">
+              <ScalarProperty Name="MaCV" ColumnName="MaCV" />
+            </EndProperty>
+            <EndProperty Name="TapTin">
+              <ScalarProperty Name="MaTT" ColumnName="MaTT" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <FunctionImportMapping FunctionImportName="SaveLog" FunctionName="QLCVModel.Store.SaveLog" />
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

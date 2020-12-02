@@ -1,0 +1,43 @@
+﻿@model NewToDoList.Models.ChiTietCV_NV
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>ChiTietCV_NV</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.TrangThai)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TrangThai)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CongViec.TieuDe)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CongViec.TieuDe)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.NhanVien.HoTen)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NhanVien.HoTen)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

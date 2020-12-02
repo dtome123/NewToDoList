@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="386997ddf8d84dc99a8335088875cd3b" Name="Diagram1">
+        <EntityTypeShape EntityType="QLCVModel.BinhLuan" Width="1.5" PointX="5.25" PointY="3.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLCVModel.ChiTietCV_NV" Width="1.5" PointX="5.25" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLCVModel.CongViec" Width="1.5" PointX="3" PointY="7.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLCVModel.NhanVien" Width="1.5" PointX="3" PointY="3.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLCVModel.PhanQuyen" Width="1.5" PointX="0.75" PointY="4.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLCVModel.TapTin" Width="1.5" PointX="5.25" PointY="7" IsExpanded="true" />
+        <AssociationConnector Association="QLCVModel.BL_fk_macv" ManuallyRouted="false" />
+        <AssociationConnector Association="QLCVModel.BL_fk_manv" ManuallyRouted="false" />
+        <AssociationConnector Association="QLCVModel.CtCvNv_fk_macv" ManuallyRouted="false" />
+        <AssociationConnector Association="QLCVModel.CtCvNv_fk_manv" ManuallyRouted="false" />
+        <AssociationConnector Association="QLCVModel.nv_fk_role" ManuallyRouted="false" />
+        <AssociationConnector Association="QLCVModel.TT_fk_nv" ManuallyRouted="false" />
+        <AssociationConnector Association="QLCVModel.ChiTietCV_TT" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
