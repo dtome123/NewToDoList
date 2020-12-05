@@ -48,3 +48,7 @@ c:\users\vi\documents\visual studio 2015\Projects\NewToDoList\NewToDoList\bin\Sy
 c:\users\vi\documents\visual studio 2015\Projects\NewToDoList\NewToDoList\bin\System.Web.Mvc.xml
 c:\users\vi\documents\visual studio 2015\Projects\NewToDoList\NewToDoList\obj\Debug\NewToDoList.dll
 c:\users\vi\documents\visual studio 2015\Projects\NewToDoList\NewToDoList\obj\Debug\NewToDoList.pdb
+C:\Users\Vi\documents\visual studio 2015\Projects\NewToDoList\NewToDoList\bin\Newtonsoft.Json.dll
+C:\Users\Vi\documents\visual studio 2015\Projects\NewToDoList\NewToDoList\bin\PusherServer.dll
+C:\Users\Vi\documents\visual studio 2015\Projects\NewToDoList\NewToDoList\bin\Newtonsoft.Json.xml
+C:\Users\Vi\documents\visual studio 2015\Projects\NewToDoList\NewToDoList\bin\PusherServer.xml

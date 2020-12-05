@@ -13,14 +13,6 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.TrangThai)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.TrangThai)
-        </dd>
-
-        <dt>
             @Html.DisplayNameFor(model => model.CongViec.TieuDe)
         </dt>
 
@@ -36,14 +28,40 @@
             @Html.DisplayFor(model => model.NhanVien.HoTen)
         </dd>
 
+        <dt>
+            @Html.DisplayNameFor(model => model.TrangThai1.TinhTrang)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TrangThai1.TinhTrang)
+        </dd>
+
     </dl>
 
-    @using (Html.BeginForm()) {
+    @*@using (Html.BeginForm()) {
         @Html.AntiForgeryToken()
 
         <div class="form-actions no-color">
             <input type="submit" value="Delete" class="btn btn-default" /> |
             @Html.ActionLink("Back to List", "Index")
         </div>
+    }*@
+
+    @{
+        <div class="btn btn-default">
+            <button class="btn btn-default btn-delete">Xóa</button>
+            @Html.ActionLink("Back to List", "Index")
+        </div>
     }
 </div>
+@section scripts{
+   <script>
+       $(".btn-delete").click(function () {
+           $.post("/ChiTietCV_NV/DeleteConfirmed", {cv:@Model.MaCV,nv:@Model.MaNV});
+           alert("Đã xóa thành công")
+           window.location.href = '/ChiTietCV_NV/Index/1';
+       })
+    </script>
+
+}
+

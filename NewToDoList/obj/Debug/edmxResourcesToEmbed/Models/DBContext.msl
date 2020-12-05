@@ -4,73 +4,84 @@
     <EntitySetMapping Name="BinhLuans">
       <EntityTypeMapping TypeName="QLCVModel.BinhLuan">
         <MappingFragment StoreEntitySet="BinhLuan">
-          <ScalarProperty Name="MaBL" ColumnName="MaBL" />
-          <ScalarProperty Name="MaCV" ColumnName="MaCV" />
-          <ScalarProperty Name="MaNV" ColumnName="MaNV" />
+          <ScalarProperty Name="created_at" ColumnName="created_at" />
           <ScalarProperty Name="BinhLuan1" ColumnName="BinhLuan" />
+          <ScalarProperty Name="MaNV" ColumnName="MaNV" />
+          <ScalarProperty Name="MaCV" ColumnName="MaCV" />
+          <ScalarProperty Name="MaBL" ColumnName="MaBL" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="ChiTietCV_NV">
       <EntityTypeMapping TypeName="QLCVModel.ChiTietCV_NV">
         <MappingFragment StoreEntitySet="ChiTietCV_NV">
-          <ScalarProperty Name="MaNV" ColumnName="MaNV" />
-          <ScalarProperty Name="MaCV" ColumnName="MaCV" />
           <ScalarProperty Name="TrangThai" ColumnName="TrangThai" />
+          <ScalarProperty Name="MaCV" ColumnName="MaCV" />
+          <ScalarProperty Name="MaNV" ColumnName="MaNV" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="CongViecs">
       <EntityTypeMapping TypeName="QLCVModel.CongViec">
         <MappingFragment StoreEntitySet="CongViec">
-          <ScalarProperty Name="MaCV" ColumnName="MaCV" />
-          <ScalarProperty Name="TieuDe" ColumnName="TieuDe" />
-          <ScalarProperty Name="NgayBatDau" ColumnName="NgayBatDau" />
-          <ScalarProperty Name="NgayKetKhuc" ColumnName="NgayKetKhuc" />
-          <ScalarProperty Name="TrangThai" ColumnName="TrangThai" />
           <ScalarProperty Name="PhamVi" ColumnName="PhamVi" />
+          <ScalarProperty Name="TrangThai" ColumnName="TrangThai" />
+          <ScalarProperty Name="NgayKetKhuc" ColumnName="NgayKetKhuc" />
+          <ScalarProperty Name="NgayBatDau" ColumnName="NgayBatDau" />
+          <ScalarProperty Name="TieuDe" ColumnName="TieuDe" />
+          <ScalarProperty Name="MaCV" ColumnName="MaCV" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="logs">
+      <EntityTypeMapping TypeName="QLCVModel.log">
+        <MappingFragment StoreEntitySet="log">
+          <ScalarProperty Name="Bang" ColumnName="Bang" />
+          <ScalarProperty Name="HoatDong" ColumnName="HoatDong" />
+          <ScalarProperty Name="MaNV" ColumnName="MaNV" />
+          <ScalarProperty Name="id" ColumnName="id" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="NhanViens">
       <EntityTypeMapping TypeName="QLCVModel.NhanVien">
         <MappingFragment StoreEntitySet="NhanVien">
-          <ScalarProperty Name="MaNV" ColumnName="MaNV" />
-          <ScalarProperty Name="HoTen" ColumnName="HoTen" />
-          <ScalarProperty Name="NgaySinh" ColumnName="NgaySinh" />
-          <ScalarProperty Name="Email" ColumnName="Email" />
-          <ScalarProperty Name="Password" ColumnName="Password" />
-          <ScalarProperty Name="TrangThai" ColumnName="TrangThai" />
-          <ScalarProperty Name="ChucVu" ColumnName="ChucVu" />
           <ScalarProperty Name="Quyen" ColumnName="Quyen" />
+          <ScalarProperty Name="ChucVu" ColumnName="ChucVu" />
+          <ScalarProperty Name="TrangThai" ColumnName="TrangThai" />
+          <ScalarProperty Name="Password" ColumnName="Password" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="NgaySinh" ColumnName="NgaySinh" />
+          <ScalarProperty Name="HoTen" ColumnName="HoTen" />
+          <ScalarProperty Name="MaNV" ColumnName="MaNV" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="PhanQuyens">
       <EntityTypeMapping TypeName="QLCVModel.PhanQuyen">
         <MappingFragment StoreEntitySet="PhanQuyen">
-          <ScalarProperty Name="MaQuyen" ColumnName="MaQuyen" />
           <ScalarProperty Name="Ten" ColumnName="Ten" />
+          <ScalarProperty Name="MaQuyen" ColumnName="MaQuyen" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="TapTins">
       <EntityTypeMapping TypeName="QLCVModel.TapTin">
         <MappingFragment StoreEntitySet="TapTin">
-          <ScalarProperty Name="MaTT" ColumnName="MaTT" />
-          <ScalarProperty Name="DuongDan" ColumnName="DuongDan" />
+          <ScalarProperty Name="MaCV" ColumnName="MaCV" />
           <ScalarProperty Name="NhanVienUp" ColumnName="NhanVienUp" />
+          <ScalarProperty Name="DuongDan" ColumnName="DuongDan" />
+          <ScalarProperty Name="MaTT" ColumnName="MaTT" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <AssociationSetMapping Name="ChiTietCV_TT" TypeName="QLCVModel.ChiTietCV_TT" StoreEntitySet="ChiTietCV_TT">
-      <EndProperty Name="CongViec">
-        <ScalarProperty Name="MaCV" ColumnName="MaCV" />
-      </EndProperty>
-      <EndProperty Name="TapTin">
-        <ScalarProperty Name="MaTT" ColumnName="MaTT" />
-      </EndProperty>
-    </AssociationSetMapping>
-    <FunctionImportMapping FunctionImportName="SaveLog" FunctionName="QLCVModel.Store.SaveLog" />
+    <EntitySetMapping Name="TrangThais">
+      <EntityTypeMapping TypeName="QLCVModel.TrangThai">
+        <MappingFragment StoreEntitySet="TrangThai">
+          <ScalarProperty Name="TinhTrang" ColumnName="TinhTrang" />
+          <ScalarProperty Name="Ma" ColumnName="Ma" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping>

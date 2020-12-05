@@ -14,18 +14,12 @@ namespace NewToDoList.Models
     
     public partial class TapTin
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public TapTin()
-        {
-            this.CongViecs = new HashSet<CongViec>();
-        }
-    
         public int MaTT { get; set; }
         public string DuongDan { get; set; }
         public int NhanVienUp { get; set; }
+        public int MaCV { get; set; }
     
+        public virtual CongViec CongViec { get; set; }
         public virtual NhanVien NhanVien { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CongViec> CongViecs { get; set; }
     }
 }

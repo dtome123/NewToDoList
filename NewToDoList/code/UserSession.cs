@@ -8,7 +8,7 @@ namespace NewToDoList.code
     [Serializable]
     public class UserSession
     {
-        public string id { get; set; }
+        public int id { get; set; }
         public string role { get; set; }
     }
 }

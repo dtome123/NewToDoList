@@ -8,18 +8,18 @@
 <h2>Index</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Create New", "Create",new { id = ViewBag.id})
 </p>
 <table class="table">
     <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.TrangThai)
-        </th>
         <th>
             @Html.DisplayNameFor(model => model.CongViec.TieuDe)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.NhanVien.HoTen)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TrangThai1.TinhTrang)
         </th>
         <th></th>
     </tr>
@@ -27,18 +27,18 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.TrangThai)
-        </td>
-        <td>
             @Html.DisplayFor(modelItem => item.CongViec.TieuDe)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.NhanVien.HoTen)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            @Html.DisplayFor(modelItem => item.TrangThai1.TinhTrang)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.MaCV,nv=item.MaNV }) |
+            @*@Html.ActionLink("Details", "Details", new { id = item.MaCV, nv = item.MaNV }) |*@
+            @Html.ActionLink("Delete", "Delete", new { id = item.MaCV, nv = item.MaNV })
         </td>
     </tr>
 }

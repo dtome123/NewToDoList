@@ -8,6 +8,7 @@
     <Property Name="MaCV" Type="int" Nullable="false" />
     <Property Name="MaNV" Type="int" Nullable="false" />
     <Property Name="BinhLuan" Type="nvarchar" MaxLength="1000" />
+    <Property Name="created_at" Type="datetime" />
   </EntityType>
   <EntityType Name="ChiTietCV_NV">
     <Key>
@@ -16,26 +17,27 @@
     </Key>
     <Property Name="MaNV" Type="int" Nullable="false" />
     <Property Name="MaCV" Type="int" Nullable="false" />
-    <Property Name="TrangThai" Type="int" Nullable="false" />
-  </EntityType>
-  <EntityType Name="ChiTietCV_TT">
-    <Key>
-      <PropertyRef Name="MaCV" />
-      <PropertyRef Name="MaTT" />
-    </Key>
-    <Property Name="MaCV" Type="int" Nullable="false" />
-    <Property Name="MaTT" Type="int" Nullable="false" />
+    <Property Name="TrangThai" Type="varchar" MaxLength="4" Nullable="false" />
   </EntityType>
   <EntityType Name="CongViec">
     <Key>
       <PropertyRef Name="MaCV" />
     </Key>
     <Property Name="MaCV" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="TieuDe" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="TieuDe" Type="nvarchar" MaxLength="100" Nullable="false" />
     <Property Name="NgayBatDau" Type="datetime" Nullable="false" />
     <Property Name="NgayKetKhuc" Type="datetime" Nullable="false" />
     <Property Name="TrangThai" Type="int" Nullable="false" />
-    <Property Name="PhamVi" Type="varchar" MaxLength="8" Nullable="false" />
+    <Property Name="PhamVi" Type="nvarchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="log">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="MaNV" Type="int" Nullable="false" />
+    <Property Name="HoatDong" Type="nvarchar" MaxLength="20" Nullable="false" />
+    <Property Name="Bang" Type="nvarchar" MaxLength="20" Nullable="false" />
   </EntityType>
   <EntityType Name="NhanVien">
     <Key>
@@ -47,7 +49,7 @@
     <Property Name="Email" Type="varchar" MaxLength="30" Nullable="false" />
     <Property Name="Password" Type="varchar" MaxLength="30" Nullable="false" />
     <Property Name="TrangThai" Type="int" Nullable="false" />
-    <Property Name="ChucVu" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="ChucVu" Type="nvarchar" MaxLength="20" Nullable="false" />
     <Property Name="Quyen" Type="varchar" MaxLength="3" Nullable="false" />
   </EntityType>
   <EntityType Name="PhanQuyen">
@@ -64,6 +66,14 @@
     <Property Name="MaTT" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="DuongDan" Type="varchar" MaxLength="500" Nullable="false" />
     <Property Name="NhanVienUp" Type="int" Nullable="false" />
+    <Property Name="MaCV" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="TrangThai">
+    <Key>
+      <PropertyRef Name="Ma" />
+    </Key>
+    <Property Name="Ma" Type="varchar" MaxLength="4" Nullable="false" />
+    <Property Name="TinhTrang" Type="nvarchar" MaxLength="20" />
   </EntityType>
   <Association Name="BL_fk_macv">
     <End Role="CongViec" Type="Self.CongViec" Multiplicity="1" />
@@ -113,27 +123,27 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="CtCvTt_fk_macv">
-    <End Role="CongViec" Type="Self.CongViec" Multiplicity="1" />
-    <End Role="ChiTietCV_TT" Type="Self.ChiTietCV_TT" Multiplicity="*" />
+  <Association Name="CtCvTT_fk_tt">
+    <End Role="TrangThai" Type="Self.TrangThai" Multiplicity="1" />
+    <End Role="ChiTietCV_NV" Type="Self.ChiTietCV_NV" Multiplicity="*" />
     <ReferentialConstraint>
-      <Principal Role="CongViec">
-        <PropertyRef Name="MaCV" />
+      <Principal Role="TrangThai">
+        <PropertyRef Name="Ma" />
       </Principal>
-      <Dependent Role="ChiTietCV_TT">
-        <PropertyRef Name="MaCV" />
+      <Dependent Role="ChiTietCV_NV">
+        <PropertyRef Name="TrangThai" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="CtCvTt_fk_matt">
-    <End Role="TapTin" Type="Self.TapTin" Multiplicity="1" />
-    <End Role="ChiTietCV_TT" Type="Self.ChiTietCV_TT" Multiplicity="*" />
+  <Association Name="fk_log_manv">
+    <End Role="NhanVien" Type="Self.NhanVien" Multiplicity="1" />
+    <End Role="log" Type="Self.log" Multiplicity="*" />
     <ReferentialConstraint>
-      <Principal Role="TapTin">
-        <PropertyRef Name="MaTT" />
+      <Principal Role="NhanVien">
+        <PropertyRef Name="MaNV" />
       </Principal>
-      <Dependent Role="ChiTietCV_TT">
-        <PropertyRef Name="MaTT" />
+      <Dependent Role="log">
+        <PropertyRef Name="MaNV" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -149,6 +159,18 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="TT_fk_cv">
+    <End Role="CongViec" Type="Self.CongViec" Multiplicity="1" />
+    <End Role="TapTin" Type="Self.TapTin" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CongViec">
+        <PropertyRef Name="MaCV" />
+      </Principal>
+      <Dependent Role="TapTin">
+        <PropertyRef Name="MaCV" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="TT_fk_nv">
     <End Role="NhanVien" Type="Self.NhanVien" Multiplicity="1" />
     <End Role="TapTin" Type="Self.TapTin" Multiplicity="*" />
@@ -161,19 +183,15 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Function Name="SaveLog" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-    <Parameter Name="manv" Type="int" Mode="In" />
-    <Parameter Name="HoatDong" Type="nvarchar" Mode="In" />
-    <Parameter Name="bang" Type="nvarchar" Mode="In" />
-  </Function>
   <EntityContainer Name="QLCVModelStoreContainer">
     <EntitySet Name="BinhLuan" EntityType="Self.BinhLuan" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="ChiTietCV_NV" EntityType="Self.ChiTietCV_NV" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="ChiTietCV_TT" EntityType="Self.ChiTietCV_TT" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="CongViec" EntityType="Self.CongViec" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="log" EntityType="Self.log" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="NhanVien" EntityType="Self.NhanVien" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="PhanQuyen" EntityType="Self.PhanQuyen" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TapTin" EntityType="Self.TapTin" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TrangThai" EntityType="Self.TrangThai" Schema="dbo" store:Type="Tables" />
     <AssociationSet Name="BL_fk_macv" Association="Self.BL_fk_macv">
       <End Role="CongViec" EntitySet="CongViec" />
       <End Role="BinhLuan" EntitySet="BinhLuan" />
@@ -190,17 +208,21 @@
       <End Role="NhanVien" EntitySet="NhanVien" />
       <End Role="ChiTietCV_NV" EntitySet="ChiTietCV_NV" />
     </AssociationSet>
-    <AssociationSet Name="CtCvTt_fk_macv" Association="Self.CtCvTt_fk_macv">
-      <End Role="CongViec" EntitySet="CongViec" />
-      <End Role="ChiTietCV_TT" EntitySet="ChiTietCV_TT" />
+    <AssociationSet Name="CtCvTT_fk_tt" Association="Self.CtCvTT_fk_tt">
+      <End Role="TrangThai" EntitySet="TrangThai" />
+      <End Role="ChiTietCV_NV" EntitySet="ChiTietCV_NV" />
     </AssociationSet>
-    <AssociationSet Name="CtCvTt_fk_matt" Association="Self.CtCvTt_fk_matt">
-      <End Role="TapTin" EntitySet="TapTin" />
-      <End Role="ChiTietCV_TT" EntitySet="ChiTietCV_TT" />
+    <AssociationSet Name="fk_log_manv" Association="Self.fk_log_manv">
+      <End Role="NhanVien" EntitySet="NhanVien" />
+      <End Role="log" EntitySet="log" />
     </AssociationSet>
     <AssociationSet Name="nv_fk_role" Association="Self.nv_fk_role">
       <End Role="PhanQuyen" EntitySet="PhanQuyen" />
       <End Role="NhanVien" EntitySet="NhanVien" />
+    </AssociationSet>
+    <AssociationSet Name="TT_fk_cv" Association="Self.TT_fk_cv">
+      <End Role="CongViec" EntitySet="CongViec" />
+      <End Role="TapTin" EntitySet="TapTin" />
     </AssociationSet>
     <AssociationSet Name="TT_fk_nv" Association="Self.TT_fk_nv">
       <End Role="NhanVien" EntitySet="NhanVien" />

@@ -17,7 +17,14 @@ namespace NewToDoList.Controllers
         // GET: ChiTietCV_NV
         public ActionResult Index()
         {
-            var chiTietCV_NV = db.ChiTietCV_NV.Include(c => c.CongViec).Include(c => c.NhanVien);
+            var chiTietCV_NV = db.ChiTietCV_NV.Include(c => c.CongViec).Include(c => c.NhanVien).Include(c => c.TrangThai1);
+            return View(chiTietCV_NV.ToList());
+        }
+        [HttpGet]
+        public ActionResult Index(int id)
+        {
+            ViewBag.id = id;
+            var chiTietCV_NV = db.ChiTietCV_NV.Where(c=>c.MaCV==id).Include(c => c.CongViec).Include(c => c.NhanVien).Include(c => c.TrangThai1);
             return View(chiTietCV_NV.ToList());
         }
 
@@ -41,9 +48,27 @@ namespace NewToDoList.Controllers
         {
             ViewBag.MaCV = new SelectList(db.CongViecs, "MaCV", "TieuDe");
             ViewBag.MaNV = new SelectList(db.NhanViens, "MaNV", "HoTen");
+            ViewBag.TrangThai = new SelectList(db.TrangThais, "Ma", "TinhTrang");
             return View();
         }
-
+        [HttpGet]
+        public ActionResult Create(int id)
+        {
+            ViewBag.id = id;
+            ViewBag.MaCV = new SelectList(db.CongViecs.Where(c=>c.MaCV==id), "MaCV", "TieuDe");
+            List<int> temp = new List<int>();
+            temp = (from t in db.ChiTietCV_NV
+                    where t.MaCV == id
+                    select t.MaNV).ToList();
+            List<NhanVien> nhanviens = new List<NhanVien>();
+            nhanviens = (from n in db.NhanViens
+                        where !temp.Contains(n.MaNV)
+                        select n).ToList();
+                                 
+            ViewBag.MaNV = new SelectList(nhanviens, "MaNV", "HoTen");
+            ViewBag.TrangThai = new SelectList(db.TrangThais, "Ma", "TinhTrang");
+            return View();
+        }
         // POST: ChiTietCV_NV/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -55,28 +80,30 @@ namespace NewToDoList.Controllers
             {
                 db.ChiTietCV_NV.Add(chiTietCV_NV);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index",new { id= chiTietCV_NV.MaCV});
             }
 
             ViewBag.MaCV = new SelectList(db.CongViecs, "MaCV", "TieuDe", chiTietCV_NV.MaCV);
             ViewBag.MaNV = new SelectList(db.NhanViens, "MaNV", "HoTen", chiTietCV_NV.MaNV);
+            ViewBag.TrangThai = new SelectList(db.TrangThais, "Ma", "TinhTrang", chiTietCV_NV.TrangThai);
             return View(chiTietCV_NV);
         }
 
         // GET: ChiTietCV_NV/Edit/5
-        public ActionResult Edit(int? id)
+        public ActionResult Edit(int? id,int? nv)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ChiTietCV_NV chiTietCV_NV = db.ChiTietCV_NV.Find(id);
+            ChiTietCV_NV chiTietCV_NV = db.ChiTietCV_NV.Where(c=> c.MaCV==id && c.MaNV == nv).FirstOrDefault();
             if (chiTietCV_NV == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.MaCV = new SelectList(db.CongViecs, "MaCV", "TieuDe", chiTietCV_NV.MaCV);
-            ViewBag.MaNV = new SelectList(db.NhanViens, "MaNV", "HoTen", chiTietCV_NV.MaNV);
+            ViewBag.MaCV = new SelectList(db.CongViecs.Where(c => c.MaCV == id), "MaCV", "TieuDe", chiTietCV_NV.MaCV);
+            ViewBag.MaNV = new SelectList(db.NhanViens.Where(c=>c.MaNV==nv), "MaNV", "HoTen", chiTietCV_NV.MaNV);
+            ViewBag.TrangThai = new SelectList(db.TrangThais, "Ma", "TinhTrang", chiTietCV_NV.TrangThai);
             return View(chiTietCV_NV);
         }
 
@@ -91,21 +118,22 @@ namespace NewToDoList.Controllers
             {
                 db.Entry(chiTietCV_NV).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", new { id = chiTietCV_NV.MaCV });
             }
             ViewBag.MaCV = new SelectList(db.CongViecs, "MaCV", "TieuDe", chiTietCV_NV.MaCV);
             ViewBag.MaNV = new SelectList(db.NhanViens, "MaNV", "HoTen", chiTietCV_NV.MaNV);
+            ViewBag.TrangThai = new SelectList(db.TrangThais, "Ma", "TinhTrang", chiTietCV_NV.TrangThai);
             return View(chiTietCV_NV);
         }
 
         // GET: ChiTietCV_NV/Delete/5
-        public ActionResult Delete(int? id)
+        public ActionResult Delete(int? id, int? nv)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ChiTietCV_NV chiTietCV_NV = db.ChiTietCV_NV.Find(id);
+            ChiTietCV_NV chiTietCV_NV = db.ChiTietCV_NV.Where(c => c.MaCV == id && c.MaNV == nv).FirstOrDefault();
             if (chiTietCV_NV == null)
             {
                 return HttpNotFound();
@@ -114,14 +142,21 @@ namespace NewToDoList.Controllers
         }
 
         // POST: ChiTietCV_NV/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+        [HttpPost]
+        public ActionResult DeleteConfirmed(int cv,int nv)
         {
-            ChiTietCV_NV chiTietCV_NV = db.ChiTietCV_NV.Find(id);
+            ChiTietCV_NV chiTietCV_NV = db.ChiTietCV_NV.Where(c => c.MaCV == cv && c.MaNV == nv).FirstOrDefault();
             db.ChiTietCV_NV.Remove(chiTietCV_NV);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", new { id = cv });
+        }
+        [HttpPost]
+        public ActionResult DeleteOk(int cv, int nv)
+        {
+            ChiTietCV_NV chiTietCV_NV = db.ChiTietCV_NV.Where(c => c.MaCV == cv && c.MaNV == nv).FirstOrDefault();
+            db.ChiTietCV_NV.Remove(chiTietCV_NV);
+            db.SaveChanges();
+            return RedirectToAction("Index", new { id = cv });
         }
 
         protected override void Dispose(bool disposing)

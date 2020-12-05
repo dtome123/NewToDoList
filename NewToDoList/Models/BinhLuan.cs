@@ -18,6 +18,7 @@ namespace NewToDoList.Models
         public int MaCV { get; set; }
         public int MaNV { get; set; }
         public string BinhLuan1 { get; set; }
+        public Nullable<System.DateTime> created_at { get; set; }
     
         public virtual CongViec CongViec { get; set; }
         public virtual NhanVien NhanVien { get; set; }

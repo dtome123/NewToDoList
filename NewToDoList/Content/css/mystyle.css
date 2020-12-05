@@ -113,7 +113,18 @@
 .form-group textarea.form-input {
     height: 150px;
 }
-
+ .btn {
+        width: 100px;
+        height: 40px;
+        background: #00BCD4;
+        border-style: solid;
+        border-color: white;
+        color: white;
+    }
+ 
+    .gridborder {
+        border-top: 1px solid #DED8D8;
+    }
 
 
 

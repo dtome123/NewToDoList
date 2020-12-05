@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using NewToDoList.Models;
+using NewToDoList.code;
 
 namespace NewToDoList.Controllers
 {
@@ -122,6 +123,37 @@ namespace NewToDoList.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+        [HttpPost]
+        public JsonResult AddComment(int macv ,string noidung)
+        {
+            bool status = true;
+            UserSession user = SessionHelper.GetSession();
+            BinhLuan b = new BinhLuan();
+            b.MaCV = macv;
+            b.MaNV = user.id;
+            b.BinhLuan1 = noidung;
+            b.created_at = DateTime.Now;
+            string ten = db.NhanViens.Find(b.MaNV).HoTen;
+            try
+            {
+                db.BinhLuans.Add(b);
+                db.SaveChanges();
+            }catch(Exception e)
+            {
+                status = false;
+            }
+
+
+            return Json(new
+            {
+                noidung = noidung,
+                macv = macv,
+                nhavien = user.id,
+                ten = ten,
+                status =status
+
+            });
         }
     }
 }
