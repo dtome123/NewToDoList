@@ -18,6 +18,7 @@ namespace NewToDoList.Models
         public TrangThai()
         {
             this.ChiTietCV_NV = new HashSet<ChiTietCV_NV>();
+            this.CongViecs = new HashSet<CongViec>();
         }
     
         public string Ma { get; set; }
@@ -25,5 +26,7 @@ namespace NewToDoList.Models
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ChiTietCV_NV> ChiTietCV_NV { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CongViec> CongViecs { get; set; }
     }
 }

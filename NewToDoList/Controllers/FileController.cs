@@ -9,7 +9,7 @@ using System.Web.Mvc;
 
 namespace NewToDoList.Controllers
 {
-
+    [Authorize]
     public class FileController : Controller
     {
         QLCVEntities db = new QLCVEntities();
@@ -39,6 +39,7 @@ namespace NewToDoList.Controllers
             //        ObjFiles.Add(obj);
             //    }
             //}
+            ViewBag.title = db.CongViecs.Find(id).TieuDe;
             List<TapTin> taptins = new List<TapTin>();
             taptins = (from t in db.TapTins
                        where t.MaCV == id
@@ -52,6 +53,7 @@ namespace NewToDoList.Controllers
                 obj.File = fi.Name;
                 obj.Size = fi.Length;
                 obj.Type = GetFileTypeByExtension(fi.Extension);
+                obj.nv = t.NhanVienUp+"_" + t.NhanVien.HoTen;
                 ObjFiles.Add(obj);
             }
 
@@ -62,6 +64,7 @@ namespace NewToDoList.Controllers
         {
             string fullPath = Path.Combine(Server.MapPath("~/Files"), fileName);
             byte[] fileBytes = System.IO.File.ReadAllBytes(fullPath);
+            db.SaveLog(SessionHelper.GetSession().id, "Đã down load file có tên: " + fileName + " cho công việc", "Tập tin");
             return File(fileBytes, System.Net.Mime.MediaTypeNames.Application.Octet, fileName);
         }
 
@@ -87,6 +90,8 @@ namespace NewToDoList.Controllers
         [HttpPost]
         public ActionResult Index(ObjFile doc,int cv)
         {
+            CongViec c = db.CongViecs.Find(cv);
+            ViewBag.title = c.TieuDe;
             foreach (var file in doc.files)
             {
 
@@ -99,6 +104,7 @@ namespace NewToDoList.Controllers
                     t.DuongDan = file.FileName;
                     t.NhanVienUp = SessionHelper.GetSession().id;
                     db.TapTins.Add(t);
+                    db.SaveLog(SessionHelper.GetSession().id, "Đã upfile có tên: " + fileName+" cho công việc "+c.TieuDe, "Tập tin");
                     db.SaveChanges();
                     file.SaveAs(filePath);
                 }

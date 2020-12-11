@@ -15,7 +15,8 @@ namespace NewToDoList.Controllers
         [HttpGet]
         public ActionResult Index()
         {
-            return View();
+            int id = SessionHelper.GetSession().id;
+            return RedirectToAction("Details", "NhanViens", new { id=id });   
         }
 
         [HttpPost]
@@ -24,7 +25,6 @@ namespace NewToDoList.Controllers
         {
             if (ModelState.IsValid && Membership.ValidateUser(model.id, model.password))
             {
-                SessionHelper.SetSession(new UserSession() { id = Convert.ToInt16(model.id) });
                 FormsAuthentication.SetAuthCookie(model.id, model.remember);
                 return RedirectToAction("Index", "Home");
             }

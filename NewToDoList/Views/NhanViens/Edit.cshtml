@@ -5,7 +5,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Edit</h2>
+<h2>Chỉnh sửa</h2>
 
 @using (Html.BeginForm())
 {
@@ -28,7 +28,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.NgaySinh, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.NgaySinh, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.NgaySinh, new { htmlAttributes = new { @class = "form-control datepicker", @autocomplete = "off" } })
                 @Html.ValidationMessageFor(model => model.NgaySinh, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -41,10 +41,11 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="form-group" style="display:none">
             @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })
+                @*@Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })*@
+                @Html.HiddenFor(model => model.Password)
                 @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -80,7 +81,38 @@
         </div>
     </div>
 }
+<hr />
+
+<div id="form-pass">
+    <h4>Đổi password</h4>
+    <div><label>Mật khẩu cũ</label> <input type="password" class="old-password" /></div>
+    <div><label>Mật khẩu mới</label> <input type="password" class="new-password" /></div>
+    <div><label>Nhập lại mật khẩu mới</label> <input type="password" class="new-confirmed-password" /></div>
+    <button class="btn btn-success" id="btn-change-pass">Đồng ý</button>
+</div>
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Trở về", "Index")
 </div>
+<link href="~/Content/themes/base/jquery-ui.min.css" rel="stylesheet" />
+@section scripts{
+    <script src="~/scripts/jquery-ui-1.12.1.js"></script>
+    <script>
+       
+        $("#btn-change-pass").click(function () {
+            var newpass = $(".new-password").val();
+            var oldpass = $(".old-password").val();
+            var confpass = $(".new-confirmed-password").val();
+            $.post("/NhanViens/ChangePassword", {id:@Model.MaNV ,newPass: newpass, oldPass: oldpass, confPass: confpass }, function (data) {
+                alert(data);
+            });
+        })
+        $(document).ready(function () {
+
+            $(".datepicker").datepicker({
+                dateFormat:"dd/mm/yy",
+            })
+        });
+    </script>
+
+}

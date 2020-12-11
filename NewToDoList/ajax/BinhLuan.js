@@ -17,7 +17,6 @@
                 type: "POST",
                 success: function (res) {
                     console.log(res);
-                    alert(res.noidung);
                     //var newcomment =+"<div class='be-img-comment'>" +"<a href='blog-detail-2.html'>" +"<img src='https://bootdey.com/img/Content/avatar/avatar1.png'  class='be-ava-comment'>" +"</a>" +"</div>" +"<div class='be-comment-content'>" +"<span class='be-comment-name'>" +"<a>" + res.ten + "</a>" +"</span>" +"<span class='be-comment-time'>" +"<i class='fa fa-clock-o'></i>"  +"</span>" +"<p class='be-comment-text'>" +res.noidung +"</p>" +"</div>" +"</div>";
                     var newcomment = "<div class='be-comment'><div class='be-img-comment'><img src='https://bootdey.com/img/Content/avatar/avatar1.png'  class='be-ava-comment'></div><div class='be-comment-content'><span class='be-comment-name'>" + res.ten + "</span><span class='be-comment-time'><i class='fa fa-clock-o'></i></span><p class='be-comment-text'>" + res.noidung + "</p></div></div>";
                     $(".comments").append(newcomment);

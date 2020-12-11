@@ -18,6 +18,7 @@ namespace NewToDoList.Models
         public int MaNV { get; set; }
         public string HoatDong { get; set; }
         public string Bang { get; set; }
+        public System.DateTime ThoiGian { get; set; }
     
         public virtual NhanVien NhanVien { get; set; }
     }

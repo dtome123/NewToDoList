@@ -5,7 +5,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Index</h2>
+<h2>Danh sách công việc</h2>
 
 <p>
     @Html.ActionLink("Create New", "Create")
@@ -42,7 +42,7 @@
             @Html.DisplayFor(modelItem => item.NgayKetKhuc)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.TrangThai)
+            @Html.DisplayFor(modelItem => item.TrangThai1.TinhTrang)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.PhamVi)

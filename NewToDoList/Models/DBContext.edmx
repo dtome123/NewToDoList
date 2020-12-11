@@ -32,7 +32,7 @@
           <Property Name="TieuDe" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="NgayBatDau" Type="datetime" Nullable="false" />
           <Property Name="NgayKetKhuc" Type="datetime" Nullable="false" />
-          <Property Name="TrangThai" Type="int" Nullable="false" />
+          <Property Name="TrangThai" Type="varchar" MaxLength="4" Nullable="false" />
           <Property Name="PhamVi" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="log">
@@ -43,6 +43,7 @@
           <Property Name="MaNV" Type="int" Nullable="false" />
           <Property Name="HoatDong" Type="nvarchar" MaxLength="20" Nullable="false" />
           <Property Name="Bang" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="ThoiGian" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="NhanVien">
           <Key>
@@ -52,7 +53,7 @@
           <Property Name="HoTen" Type="nvarchar" MaxLength="30" Nullable="false" />
           <Property Name="NgaySinh" Type="datetime" Nullable="false" />
           <Property Name="Email" Type="varchar" MaxLength="30" Nullable="false" />
-          <Property Name="Password" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="Password" Type="varchar" MaxLength="70" Nullable="false" />
           <Property Name="TrangThai" Type="int" Nullable="false" />
           <Property Name="ChucVu" Type="nvarchar" MaxLength="20" Nullable="false" />
           <Property Name="Quyen" Type="varchar" MaxLength="3" Nullable="false" />
@@ -140,6 +141,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="Cv_fk_tt">
+          <End Role="TrangThai" Type="Self.TrangThai" Multiplicity="1" />
+          <End Role="CongViec" Type="Self.CongViec" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TrangThai">
+              <PropertyRef Name="Ma" />
+            </Principal>
+            <Dependent Role="CongViec">
+              <PropertyRef Name="TrangThai" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="fk_log_manv">
           <End Role="NhanVien" Type="Self.NhanVien" Multiplicity="1" />
           <End Role="log" Type="Self.log" Multiplicity="*" />
@@ -188,6 +201,11 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="SaveLog" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="manv" Type="int" Mode="In" />
+          <Parameter Name="HoatDong" Type="nvarchar" Mode="In" />
+          <Parameter Name="bang" Type="nvarchar" Mode="In" />
+        </Function>
         <EntityContainer Name="QLCVModelStoreContainer">
           <EntitySet Name="BinhLuan" EntityType="Self.BinhLuan" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ChiTietCV_NV" EntityType="Self.ChiTietCV_NV" Schema="dbo" store:Type="Tables" />
@@ -217,6 +235,10 @@
             <End Role="TrangThai" EntitySet="TrangThai" />
             <End Role="ChiTietCV_NV" EntitySet="ChiTietCV_NV" />
           </AssociationSet>
+          <AssociationSet Name="Cv_fk_tt" Association="Self.Cv_fk_tt">
+            <End Role="TrangThai" EntitySet="TrangThai" />
+            <End Role="CongViec" EntitySet="CongViec" />
+          </AssociationSet>
           <AssociationSet Name="fk_log_manv" Association="Self.fk_log_manv">
             <End Role="NhanVien" EntitySet="NhanVien" />
             <End Role="log" EntitySet="log" />
@@ -241,39 +263,38 @@
         <EntityContainer Name="QLCVEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="BinhLuans" EntityType="QLCVModel.BinhLuan" />
           <EntitySet Name="ChiTietCV_NV" EntityType="QLCVModel.ChiTietCV_NV" />
-          <EntitySet Name="CongViecs" EntityType="QLCVModel.CongViec" />
-          <EntitySet Name="logs" EntityType="QLCVModel.log" />
-          <EntitySet Name="NhanViens" EntityType="QLCVModel.NhanVien" />
           <EntitySet Name="PhanQuyens" EntityType="QLCVModel.PhanQuyen" />
           <EntitySet Name="TapTins" EntityType="QLCVModel.TapTin" />
           <EntitySet Name="TrangThais" EntityType="QLCVModel.TrangThai" />
+          <AssociationSet Name="CtCvTT_fk_tt" Association="QLCVModel.CtCvTT_fk_tt">
+            <End Role="TrangThai" EntitySet="TrangThais" />
+            <End Role="ChiTietCV_NV" EntitySet="ChiTietCV_NV" />
+          </AssociationSet>
+          <EntitySet Name="CongViecs" EntityType="QLCVModel.CongViec" />
           <AssociationSet Name="BL_fk_macv" Association="QLCVModel.BL_fk_macv">
             <End Role="CongViec" EntitySet="CongViecs" />
-            <End Role="BinhLuan" EntitySet="BinhLuans" />
-          </AssociationSet>
-          <AssociationSet Name="BL_fk_manv" Association="QLCVModel.BL_fk_manv">
-            <End Role="NhanVien" EntitySet="NhanViens" />
             <End Role="BinhLuan" EntitySet="BinhLuans" />
           </AssociationSet>
           <AssociationSet Name="CtCvNv_fk_macv" Association="QLCVModel.CtCvNv_fk_macv">
             <End Role="CongViec" EntitySet="CongViecs" />
             <End Role="ChiTietCV_NV" EntitySet="ChiTietCV_NV" />
           </AssociationSet>
-          <AssociationSet Name="CtCvNv_fk_manv" Association="QLCVModel.CtCvNv_fk_manv">
-            <End Role="NhanVien" EntitySet="NhanViens" />
-            <End Role="ChiTietCV_NV" EntitySet="ChiTietCV_NV" />
-          </AssociationSet>
-          <AssociationSet Name="CtCvTT_fk_tt" Association="QLCVModel.CtCvTT_fk_tt">
+          <AssociationSet Name="Cv_fk_tt" Association="QLCVModel.Cv_fk_tt">
             <End Role="TrangThai" EntitySet="TrangThais" />
-            <End Role="ChiTietCV_NV" EntitySet="ChiTietCV_NV" />
+            <End Role="CongViec" EntitySet="CongViecs" />
           </AssociationSet>
           <AssociationSet Name="TT_fk_cv" Association="QLCVModel.TT_fk_cv">
             <End Role="CongViec" EntitySet="CongViecs" />
             <End Role="TapTin" EntitySet="TapTins" />
           </AssociationSet>
-          <AssociationSet Name="fk_log_manv" Association="QLCVModel.fk_log_manv">
+          <EntitySet Name="NhanViens" EntityType="QLCVModel.NhanVien" />
+          <AssociationSet Name="BL_fk_manv" Association="QLCVModel.BL_fk_manv">
             <End Role="NhanVien" EntitySet="NhanViens" />
-            <End Role="log" EntitySet="logs" />
+            <End Role="BinhLuan" EntitySet="BinhLuans" />
+          </AssociationSet>
+          <AssociationSet Name="CtCvNv_fk_manv" Association="QLCVModel.CtCvNv_fk_manv">
+            <End Role="NhanVien" EntitySet="NhanViens" />
+            <End Role="ChiTietCV_NV" EntitySet="ChiTietCV_NV" />
           </AssociationSet>
           <AssociationSet Name="nv_fk_role" Association="QLCVModel.nv_fk_role">
             <End Role="PhanQuyen" EntitySet="PhanQuyens" />
@@ -282,6 +303,16 @@
           <AssociationSet Name="TT_fk_nv" Association="QLCVModel.TT_fk_nv">
             <End Role="NhanVien" EntitySet="NhanViens" />
             <End Role="TapTin" EntitySet="TapTins" />
+          </AssociationSet>
+          <FunctionImport Name="SaveLog">
+            <Parameter Name="manv" Mode="In" Type="Int32" />
+            <Parameter Name="HoatDong" Mode="In" Type="String" />
+            <Parameter Name="bang" Mode="In" Type="String" />
+          </FunctionImport>
+          <EntitySet Name="logs" EntityType="QLCVModel.log" />
+          <AssociationSet Name="fk_log_manv" Association="QLCVModel.fk_log_manv">
+            <End Role="NhanVien" EntitySet="NhanViens" />
+            <End Role="log" EntitySet="logs" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="BinhLuan">
@@ -304,51 +335,9 @@
           <Property Name="MaNV" Type="Int32" Nullable="false" />
           <Property Name="MaCV" Type="Int32" Nullable="false" />
           <Property Name="TrangThai" Type="String" Nullable="false" MaxLength="4" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="TrangThai1" Relationship="QLCVModel.CtCvTT_fk_tt" FromRole="ChiTietCV_NV" ToRole="TrangThai" />
           <NavigationProperty Name="CongViec" Relationship="QLCVModel.CtCvNv_fk_macv" FromRole="ChiTietCV_NV" ToRole="CongViec" />
           <NavigationProperty Name="NhanVien" Relationship="QLCVModel.CtCvNv_fk_manv" FromRole="ChiTietCV_NV" ToRole="NhanVien" />
-          <NavigationProperty Name="TrangThai1" Relationship="QLCVModel.CtCvTT_fk_tt" FromRole="ChiTietCV_NV" ToRole="TrangThai" />
-        </EntityType>
-        <EntityType Name="CongViec">
-          <Key>
-            <PropertyRef Name="MaCV" />
-          </Key>
-          <Property Name="MaCV" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="TieuDe" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="NgayBatDau" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="NgayKetKhuc" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="TrangThai" Type="Int32" Nullable="false" />
-          <Property Name="PhamVi" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="BinhLuans" Relationship="QLCVModel.BL_fk_macv" FromRole="CongViec" ToRole="BinhLuan" />
-          <NavigationProperty Name="ChiTietCV_NV" Relationship="QLCVModel.CtCvNv_fk_macv" FromRole="CongViec" ToRole="ChiTietCV_NV" />
-          <NavigationProperty Name="TapTins" Relationship="QLCVModel.TT_fk_cv" FromRole="CongViec" ToRole="TapTin" />
-        </EntityType>
-        <EntityType Name="log">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="MaNV" Type="Int32" Nullable="false" />
-          <Property Name="HoatDong" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="Bang" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="NhanVien" Relationship="QLCVModel.fk_log_manv" FromRole="log" ToRole="NhanVien" />
-        </EntityType>
-        <EntityType Name="NhanVien">
-          <Key>
-            <PropertyRef Name="MaNV" />
-          </Key>
-          <Property Name="MaNV" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="HoTen" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
-          <Property Name="NgaySinh" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="Email" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
-          <Property Name="Password" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
-          <Property Name="TrangThai" Type="Int32" Nullable="false" />
-          <Property Name="ChucVu" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="Quyen" Type="String" Nullable="false" MaxLength="3" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="BinhLuans" Relationship="QLCVModel.BL_fk_manv" FromRole="NhanVien" ToRole="BinhLuan" />
-          <NavigationProperty Name="ChiTietCV_NV" Relationship="QLCVModel.CtCvNv_fk_manv" FromRole="NhanVien" ToRole="ChiTietCV_NV" />
-          <NavigationProperty Name="logs" Relationship="QLCVModel.fk_log_manv" FromRole="NhanVien" ToRole="log" />
-          <NavigationProperty Name="PhanQuyen" Relationship="QLCVModel.nv_fk_role" FromRole="NhanVien" ToRole="PhanQuyen" />
-          <NavigationProperty Name="TapTins" Relationship="QLCVModel.TT_fk_nv" FromRole="NhanVien" ToRole="TapTin" />
         </EntityType>
         <EntityType Name="PhanQuyen">
           <Key>
@@ -376,6 +365,34 @@
           <Property Name="Ma" Type="String" Nullable="false" MaxLength="4" FixedLength="false" Unicode="false" />
           <Property Name="TinhTrang" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="ChiTietCV_NV" Relationship="QLCVModel.CtCvTT_fk_tt" FromRole="TrangThai" ToRole="ChiTietCV_NV" />
+          <NavigationProperty Name="CongViecs" Relationship="QLCVModel.Cv_fk_tt" FromRole="TrangThai" ToRole="CongViec" />
+        </EntityType>
+        <Association Name="CtCvTT_fk_tt">
+          <End Type="QLCVModel.TrangThai" Role="TrangThai" Multiplicity="1" />
+          <End Type="QLCVModel.ChiTietCV_NV" Role="ChiTietCV_NV" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TrangThai">
+              <PropertyRef Name="Ma" />
+            </Principal>
+            <Dependent Role="ChiTietCV_NV">
+              <PropertyRef Name="TrangThai" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="CongViec">
+          <Key>
+            <PropertyRef Name="MaCV" />
+          </Key>
+          <Property Name="MaCV" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TieuDe" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="NgayBatDau" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="NgayKetKhuc" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TrangThai" Type="String" Nullable="false" MaxLength="4" FixedLength="false" Unicode="false" />
+          <Property Name="PhamVi" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="BinhLuans" Relationship="QLCVModel.BL_fk_macv" FromRole="CongViec" ToRole="BinhLuan" />
+          <NavigationProperty Name="ChiTietCV_NV" Relationship="QLCVModel.CtCvNv_fk_macv" FromRole="CongViec" ToRole="ChiTietCV_NV" />
+          <NavigationProperty Name="TrangThai1" Relationship="QLCVModel.Cv_fk_tt" FromRole="CongViec" ToRole="TrangThai" />
+          <NavigationProperty Name="TapTins" Relationship="QLCVModel.TT_fk_cv" FromRole="CongViec" ToRole="TapTin" />
         </EntityType>
         <Association Name="BL_fk_macv">
           <End Type="QLCVModel.CongViec" Role="CongViec" Multiplicity="1" />
@@ -386,18 +403,6 @@
             </Principal>
             <Dependent Role="BinhLuan">
               <PropertyRef Name="MaCV" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="BL_fk_manv">
-          <End Type="QLCVModel.NhanVien" Role="NhanVien" Multiplicity="1" />
-          <End Type="QLCVModel.BinhLuan" Role="BinhLuan" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="NhanVien">
-              <PropertyRef Name="MaNV" />
-            </Principal>
-            <Dependent Role="BinhLuan">
-              <PropertyRef Name="MaNV" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -413,26 +418,14 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="CtCvNv_fk_manv">
-          <End Type="QLCVModel.NhanVien" Role="NhanVien" Multiplicity="1" />
-          <End Type="QLCVModel.ChiTietCV_NV" Role="ChiTietCV_NV" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="NhanVien">
-              <PropertyRef Name="MaNV" />
-            </Principal>
-            <Dependent Role="ChiTietCV_NV">
-              <PropertyRef Name="MaNV" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="CtCvTT_fk_tt">
+        <Association Name="Cv_fk_tt">
           <End Type="QLCVModel.TrangThai" Role="TrangThai" Multiplicity="1" />
-          <End Type="QLCVModel.ChiTietCV_NV" Role="ChiTietCV_NV" Multiplicity="*" />
+          <End Type="QLCVModel.CongViec" Role="CongViec" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="TrangThai">
               <PropertyRef Name="Ma" />
             </Principal>
-            <Dependent Role="ChiTietCV_NV">
+            <Dependent Role="CongViec">
               <PropertyRef Name="TrangThai" />
             </Dependent>
           </ReferentialConstraint>
@@ -449,14 +442,44 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="fk_log_manv">
+        <EntityType Name="NhanVien">
+          <Key>
+            <PropertyRef Name="MaNV" />
+          </Key>
+          <Property Name="MaNV" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="HoTen" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="NgaySinh" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Email" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="Password" Type="String" Nullable="false" MaxLength="70" FixedLength="false" Unicode="false" />
+          <Property Name="TrangThai" Type="Int32" Nullable="false" />
+          <Property Name="ChucVu" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Quyen" Type="String" Nullable="false" MaxLength="3" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="BinhLuans" Relationship="QLCVModel.BL_fk_manv" FromRole="NhanVien" ToRole="BinhLuan" />
+          <NavigationProperty Name="ChiTietCV_NV" Relationship="QLCVModel.CtCvNv_fk_manv" FromRole="NhanVien" ToRole="ChiTietCV_NV" />
+          <NavigationProperty Name="PhanQuyen" Relationship="QLCVModel.nv_fk_role" FromRole="NhanVien" ToRole="PhanQuyen" />
+          <NavigationProperty Name="TapTins" Relationship="QLCVModel.TT_fk_nv" FromRole="NhanVien" ToRole="TapTin" />
+          <NavigationProperty Name="logs" Relationship="QLCVModel.fk_log_manv" FromRole="NhanVien" ToRole="log" />
+        </EntityType>
+        <Association Name="BL_fk_manv">
           <End Type="QLCVModel.NhanVien" Role="NhanVien" Multiplicity="1" />
-          <End Type="QLCVModel.log" Role="log" Multiplicity="*" />
+          <End Type="QLCVModel.BinhLuan" Role="BinhLuan" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="NhanVien">
               <PropertyRef Name="MaNV" />
             </Principal>
-            <Dependent Role="log">
+            <Dependent Role="BinhLuan">
+              <PropertyRef Name="MaNV" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="CtCvNv_fk_manv">
+          <End Type="QLCVModel.NhanVien" Role="NhanVien" Multiplicity="1" />
+          <End Type="QLCVModel.ChiTietCV_NV" Role="ChiTietCV_NV" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NhanVien">
+              <PropertyRef Name="MaNV" />
+            </Principal>
+            <Dependent Role="ChiTietCV_NV">
               <PropertyRef Name="MaNV" />
             </Dependent>
           </ReferentialConstraint>
@@ -482,6 +505,29 @@
             </Principal>
             <Dependent Role="TapTin">
               <PropertyRef Name="NhanVienUp" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="log">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MaNV" Type="Int32" Nullable="false" />
+          <Property Name="HoatDong" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Bang" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="ThoiGian" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="NhanVien" Relationship="QLCVModel.fk_log_manv" FromRole="log" ToRole="NhanVien" />
+        </EntityType>
+        <Association Name="fk_log_manv">
+          <End Type="QLCVModel.NhanVien" Role="NhanVien" Multiplicity="1" />
+          <End Type="QLCVModel.log" Role="log" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NhanVien">
+              <PropertyRef Name="MaNV" />
+            </Principal>
+            <Dependent Role="log">
+              <PropertyRef Name="MaNV" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -511,42 +557,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="CongViecs">
-            <EntityTypeMapping TypeName="QLCVModel.CongViec">
-              <MappingFragment StoreEntitySet="CongViec">
-                <ScalarProperty Name="PhamVi" ColumnName="PhamVi" />
-                <ScalarProperty Name="TrangThai" ColumnName="TrangThai" />
-                <ScalarProperty Name="NgayKetKhuc" ColumnName="NgayKetKhuc" />
-                <ScalarProperty Name="NgayBatDau" ColumnName="NgayBatDau" />
-                <ScalarProperty Name="TieuDe" ColumnName="TieuDe" />
-                <ScalarProperty Name="MaCV" ColumnName="MaCV" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="logs">
-            <EntityTypeMapping TypeName="QLCVModel.log">
-              <MappingFragment StoreEntitySet="log">
-                <ScalarProperty Name="Bang" ColumnName="Bang" />
-                <ScalarProperty Name="HoatDong" ColumnName="HoatDong" />
-                <ScalarProperty Name="MaNV" ColumnName="MaNV" />
-                <ScalarProperty Name="id" ColumnName="id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="NhanViens">
-            <EntityTypeMapping TypeName="QLCVModel.NhanVien">
-              <MappingFragment StoreEntitySet="NhanVien">
-                <ScalarProperty Name="Quyen" ColumnName="Quyen" />
-                <ScalarProperty Name="ChucVu" ColumnName="ChucVu" />
-                <ScalarProperty Name="TrangThai" ColumnName="TrangThai" />
-                <ScalarProperty Name="Password" ColumnName="Password" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="NgaySinh" ColumnName="NgaySinh" />
-                <ScalarProperty Name="HoTen" ColumnName="HoTen" />
-                <ScalarProperty Name="MaNV" ColumnName="MaNV" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="PhanQuyens">
             <EntityTypeMapping TypeName="QLCVModel.PhanQuyen">
               <MappingFragment StoreEntitySet="PhanQuyen">
@@ -570,6 +580,44 @@
               <MappingFragment StoreEntitySet="TrangThai">
                 <ScalarProperty Name="TinhTrang" ColumnName="TinhTrang" />
                 <ScalarProperty Name="Ma" ColumnName="Ma" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CongViecs">
+            <EntityTypeMapping TypeName="QLCVModel.CongViec">
+              <MappingFragment StoreEntitySet="CongViec">
+                <ScalarProperty Name="PhamVi" ColumnName="PhamVi" />
+                <ScalarProperty Name="TrangThai" ColumnName="TrangThai" />
+                <ScalarProperty Name="NgayKetKhuc" ColumnName="NgayKetKhuc" />
+                <ScalarProperty Name="NgayBatDau" ColumnName="NgayBatDau" />
+                <ScalarProperty Name="TieuDe" ColumnName="TieuDe" />
+                <ScalarProperty Name="MaCV" ColumnName="MaCV" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="NhanViens">
+            <EntityTypeMapping TypeName="QLCVModel.NhanVien">
+              <MappingFragment StoreEntitySet="NhanVien">
+                <ScalarProperty Name="Quyen" ColumnName="Quyen" />
+                <ScalarProperty Name="ChucVu" ColumnName="ChucVu" />
+                <ScalarProperty Name="TrangThai" ColumnName="TrangThai" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="NgaySinh" ColumnName="NgaySinh" />
+                <ScalarProperty Name="HoTen" ColumnName="HoTen" />
+                <ScalarProperty Name="MaNV" ColumnName="MaNV" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="SaveLog" FunctionName="QLCVModel.Store.SaveLog" />
+          <EntitySetMapping Name="logs">
+            <EntityTypeMapping TypeName="QLCVModel.log">
+              <MappingFragment StoreEntitySet="log">
+                <ScalarProperty Name="ThoiGian" ColumnName="ThoiGian" />
+                <ScalarProperty Name="Bang" ColumnName="Bang" />
+                <ScalarProperty Name="HoatDong" ColumnName="HoatDong" />
+                <ScalarProperty Name="MaNV" ColumnName="MaNV" />
+                <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

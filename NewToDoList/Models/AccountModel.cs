@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NewToDoList.code;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -21,6 +22,8 @@ namespace NewToDoList.Models
                     
                     if (result_pass.Equals(password))
                     {
+                        SessionHelper.SetSession(new UserSession() { id = Convert.ToInt16(nv.MaNV),name=nv.HoTen,role=nv.Quyen });
+                        db.SaveLog(SessionHelper.GetSession().id,"đăng nhập vào website", "Login");
                         return true;
                     }
                     else

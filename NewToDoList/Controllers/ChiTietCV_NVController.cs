@@ -7,22 +7,27 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using NewToDoList.Models;
+using NewToDoList.code;
 
 namespace NewToDoList.Controllers
 {
+    [Authorize]
     public class ChiTietCV_NVController : Controller
     {
+        
         private QLCVEntities db = new QLCVEntities();
 
         // GET: ChiTietCV_NV
         public ActionResult Index()
         {
+            
             var chiTietCV_NV = db.ChiTietCV_NV.Include(c => c.CongViec).Include(c => c.NhanVien).Include(c => c.TrangThai1);
             return View(chiTietCV_NV.ToList());
         }
         [HttpGet]
         public ActionResult Index(int id)
         {
+            ViewBag.title = db.CongViecs.Find(id).TieuDe;
             ViewBag.id = id;
             var chiTietCV_NV = db.ChiTietCV_NV.Where(c=>c.MaCV==id).Include(c => c.CongViec).Include(c => c.NhanVien).Include(c => c.TrangThai1);
             return View(chiTietCV_NV.ToList());
@@ -80,6 +85,8 @@ namespace NewToDoList.Controllers
             {
                 db.ChiTietCV_NV.Add(chiTietCV_NV);
                 db.SaveChanges();
+                
+                db.SaveLog(SessionHelper.GetSession().id, "Đã sửa thêm "+chiTietCV_NV.NhanVien.MaNV+"_"+chiTietCV_NV.NhanVien.HoTen+" vào danh sách cho công việc: " + chiTietCV_NV.MaCV + "_" + chiTietCV_NV.CongViec.TieuDe, "Công việc");
                 return RedirectToAction("Index",new { id= chiTietCV_NV.MaCV});
             }
 
@@ -118,6 +125,8 @@ namespace NewToDoList.Controllers
             {
                 db.Entry(chiTietCV_NV).State = EntityState.Modified;
                 db.SaveChanges();
+                
+                db.SaveLog(SessionHelper.GetSession().id, "Đã cập nhật trạng thái công việc: " + chiTietCV_NV.MaCV + " cho công việc" + chiTietCV_NV.CongViec.TieuDe, "Công việc");
                 return RedirectToAction("Index", new { id = chiTietCV_NV.MaCV });
             }
             ViewBag.MaCV = new SelectList(db.CongViecs, "MaCV", "TieuDe", chiTietCV_NV.MaCV);
@@ -148,6 +157,7 @@ namespace NewToDoList.Controllers
             ChiTietCV_NV chiTietCV_NV = db.ChiTietCV_NV.Where(c => c.MaCV == cv && c.MaNV == nv).FirstOrDefault();
             db.ChiTietCV_NV.Remove(chiTietCV_NV);
             db.SaveChanges();
+            db.SaveLog(SessionHelper.GetSession().id, "Đã xóa công việc của nhân viện: " + chiTietCV_NV.MaCV + " cho công việc" + chiTietCV_NV.CongViec.TieuDe, "Công việc");
             return RedirectToAction("Index", new { id = cv });
         }
         [HttpPost]

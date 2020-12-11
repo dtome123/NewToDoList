@@ -5,11 +5,11 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Delete</h2>
 
-<h3>Are you sure you want to delete this?</h3>
+
+<h3>Bạn chắc chắn muốn xóa?</h3>
 <div>
-    <h4>ChiTietCV_NV</h4>
+    <h4>Chi tiết công việc nhân viên</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
@@ -48,9 +48,10 @@
     }*@
 
     @{
-        <div class="btn btn-default">
+        <div >
             <button class="btn btn-default btn-delete">Xóa</button>
-            @Html.ActionLink("Back to List", "Index")
+            <br />
+            @Html.ActionLink("Trở về", "Index/"+Model.MaCV)
         </div>
     }
 </div>
@@ -59,7 +60,7 @@
        $(".btn-delete").click(function () {
            $.post("/ChiTietCV_NV/DeleteConfirmed", {cv:@Model.MaCV,nv:@Model.MaNV});
            alert("Đã xóa thành công")
-           window.location.href = '/ChiTietCV_NV/Index/1';
+           window.location.href = '/ChiTietCV_NV/Index/'+@Model.MaCV;
        })
     </script>
 

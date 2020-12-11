@@ -19,8 +19,8 @@ namespace NewToDoList.Models
         {
             this.BinhLuans = new HashSet<BinhLuan>();
             this.ChiTietCV_NV = new HashSet<ChiTietCV_NV>();
-            this.logs = new HashSet<log>();
             this.TapTins = new HashSet<TapTin>();
+            this.logs = new HashSet<log>();
         }
     
         public int MaNV { get; set; }
@@ -36,10 +36,10 @@ namespace NewToDoList.Models
         public virtual ICollection<BinhLuan> BinhLuans { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ChiTietCV_NV> ChiTietCV_NV { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<log> logs { get; set; }
         public virtual PhanQuyen PhanQuyen { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TapTin> TapTins { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<log> logs { get; set; }
     }
 }

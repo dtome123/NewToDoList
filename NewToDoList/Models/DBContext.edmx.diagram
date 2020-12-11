@@ -7,21 +7,22 @@
       <Diagram DiagramId="fdd9ecbd1262445dad8b59835a6f9e50" Name="Diagram1">
         <EntityTypeShape EntityType="QLCVModel.BinhLuan" Width="1.5" PointX="5.25" PointY="8.625" />
         <EntityTypeShape EntityType="QLCVModel.ChiTietCV_NV" Width="1.5" PointX="5.25" PointY="5.75" />
-        <EntityTypeShape EntityType="QLCVModel.CongViec" Width="1.5" PointX="3" PointY="1.5" />
-        <EntityTypeShape EntityType="QLCVModel.log" Width="1.5" PointX="5.25" PointY="14.75" />
-        <EntityTypeShape EntityType="QLCVModel.NhanVien" Width="1.5" PointX="3" PointY="5.125" />
         <EntityTypeShape EntityType="QLCVModel.PhanQuyen" Width="1.5" PointX="0.75" PointY="6" />
         <EntityTypeShape EntityType="QLCVModel.TapTin" Width="1.5" PointX="5.25" PointY="2.75" />
         <EntityTypeShape EntityType="QLCVModel.TrangThai" Width="1.5" PointX="3" PointY="10" />
-        <AssociationConnector Association="QLCVModel.BL_fk_macv" />
-        <AssociationConnector Association="QLCVModel.BL_fk_manv" />
-        <AssociationConnector Association="QLCVModel.CtCvNv_fk_macv" />
-        <AssociationConnector Association="QLCVModel.CtCvNv_fk_manv" />
         <AssociationConnector Association="QLCVModel.CtCvTT_fk_tt" />
+        <EntityTypeShape EntityType="QLCVModel.CongViec" Width="1.5" PointX="5.25" PointY="18.375" />
+        <AssociationConnector Association="QLCVModel.BL_fk_macv" />
+        <AssociationConnector Association="QLCVModel.CtCvNv_fk_macv" />
+        <AssociationConnector Association="QLCVModel.Cv_fk_tt" />
         <AssociationConnector Association="QLCVModel.TT_fk_cv" />
-        <AssociationConnector Association="QLCVModel.fk_log_manv" />
+        <EntityTypeShape EntityType="QLCVModel.NhanVien" Width="1.5" PointX="3" PointY="5" />
+        <AssociationConnector Association="QLCVModel.BL_fk_manv" />
+        <AssociationConnector Association="QLCVModel.CtCvNv_fk_manv" />
         <AssociationConnector Association="QLCVModel.nv_fk_role" />
         <AssociationConnector Association="QLCVModel.TT_fk_nv" />
+        <EntityTypeShape EntityType="QLCVModel.log" Width="1.5" PointX="3.125" PointY="1" />
+        <AssociationConnector Association="QLCVModel.fk_log_manv" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

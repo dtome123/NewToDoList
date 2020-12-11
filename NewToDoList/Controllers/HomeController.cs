@@ -6,9 +6,9 @@ using System.Web.Mvc;
 
 namespace NewToDoList.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
-        [Authorize]
         // GET: Home
         public ActionResult Index()
         {

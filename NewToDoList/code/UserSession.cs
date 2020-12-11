@@ -10,5 +10,6 @@ namespace NewToDoList.code
     {
         public int id { get; set; }
         public string role { get; set; }
+        public string name { get; set; }
     }
 }

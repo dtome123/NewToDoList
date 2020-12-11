@@ -11,6 +11,7 @@ using NewToDoList.code;
 
 namespace NewToDoList.Controllers
 {
+    [Authorize]
     public class CongViecsController : Controller
     {
         private QLCVEntities db = new QLCVEntities();
@@ -18,7 +19,8 @@ namespace NewToDoList.Controllers
         // GET: CongViecs
         public ActionResult Index()
         {
-            return View(db.CongViecs.ToList());
+            var congViecs = db.CongViecs.Include(c => c.TrangThai1);
+            return View(congViecs.ToList());
         }
 
         // GET: CongViecs/Details/5
@@ -39,6 +41,7 @@ namespace NewToDoList.Controllers
         // GET: CongViecs/Create
         public ActionResult Create()
         {
+            ViewBag.TrangThai = new SelectList(db.TrangThais, "Ma", "TinhTrang");
             return View();
         }
 
@@ -51,11 +54,19 @@ namespace NewToDoList.Controllers
         {
             if (ModelState.IsValid)
             {
+                if (DateTime.Compare(congViec.NgayBatDau,congViec.NgayKetKhuc)>0)
+                {
+                    ViewBag.TrangThai = new SelectList(db.TrangThais, "Ma", "TinhTrang", congViec.TrangThai);
+                    ModelState.AddModelError("NgayBatDau", "Ngày bắt đầu hơn ngày kết thúc");
+                    return View(congViec);
+                }
                 db.CongViecs.Add(congViec);
                 db.SaveChanges();
+                db.SaveLog(SessionHelper.GetSession().id, "Đã tạo một công việc mới", "Công việc");
                 return RedirectToAction("Index");
             }
 
+            ViewBag.TrangThai = new SelectList(db.TrangThais, "Ma", "TinhTrang", congViec.TrangThai);
             return View(congViec);
         }
 
@@ -71,6 +82,7 @@ namespace NewToDoList.Controllers
             {
                 return HttpNotFound();
             }
+            ViewBag.TrangThai = new SelectList(db.TrangThais, "Ma", "TinhTrang", congViec.TrangThai);
             return View(congViec);
         }
 
@@ -85,8 +97,10 @@ namespace NewToDoList.Controllers
             {
                 db.Entry(congViec).State = EntityState.Modified;
                 db.SaveChanges();
+                db.SaveLog(SessionHelper.GetSession().id, "Đã sửa thông tin công việc: "+congViec.MaCV+"_"+congViec.TieuDe, "Công việc");
                 return RedirectToAction("Index");
             }
+            ViewBag.TrangThai = new SelectList(db.TrangThais, "Ma", "TinhTrang", congViec.TrangThai);
             return View(congViec);
         }
 
@@ -113,6 +127,7 @@ namespace NewToDoList.Controllers
             CongViec congViec = db.CongViecs.Find(id);
             db.CongViecs.Remove(congViec);
             db.SaveChanges();
+            db.SaveLog(SessionHelper.GetSession().id, "Đã xóa công việc: " + congViec.MaCV + "_" + congViec.TieuDe, "Công việc");
             return RedirectToAction("Index");
         }
 
@@ -125,7 +140,7 @@ namespace NewToDoList.Controllers
             base.Dispose(disposing);
         }
         [HttpPost]
-        public JsonResult AddComment(int macv ,string noidung)
+        public JsonResult AddComment(int macv, string noidung)
         {
             bool status = true;
             UserSession user = SessionHelper.GetSession();
@@ -138,8 +153,11 @@ namespace NewToDoList.Controllers
             try
             {
                 db.BinhLuans.Add(b);
+                CongViec c = db.CongViecs.Find(macv);
+                db.SaveLog(SessionHelper.GetSession().id, "Đã thêm bình luận cho công việc: " +c.MaCV+"_"+c.TieuDe, "Công việc");
                 db.SaveChanges();
-            }catch(Exception e)
+            }
+            catch (Exception e)
             {
                 status = false;
             }
@@ -151,9 +169,10 @@ namespace NewToDoList.Controllers
                 macv = macv,
                 nhavien = user.id,
                 ten = ten,
-                status =status
+                status = status
 
             });
         }
+
     }
 }

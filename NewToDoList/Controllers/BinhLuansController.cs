@@ -11,8 +11,10 @@ using NewToDoList.code;
 
 namespace NewToDoList.Controllers
 {
+    [Authorize]
     public class BinhLuansController : Controller
     {
+        
         private QLCVEntities db = new QLCVEntities();
 
         // GET: BinhLuans

@@ -1,16 +1,16 @@
 ﻿@model NewToDoList.Models.CongViec
 
-
 @{
     ViewBag.Title = "Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Details</h2>
 
-<div class="container-fluid">
-    <h4>CongViec</h4>
-    <h4>@Html.ActionLink("Xem thông tin nhân viên", "Index", "ChiTietCV_NV", new { id = Model.MaCV }, null)</h4>
+
+<div>
+    <h4>Chi tiết công việc</h4>
+    <h4>@Html.ActionLink("Xem thông tin nhân viên", "Index", "ChiTietCV_NV", new { id = Model.MaCV }, new { @class = "btn btn-info",@style="width:250px" })</h4>
+    <h4>@Html.ActionLink("Xem file công việc", "Index", "File", new { id = Model.MaCV }, new { @class="btn btn-info", @style = "width:250px" })</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
@@ -38,24 +38,25 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.TrangThai)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.TrangThai)
-        </dd>
-
-        <dt>
             @Html.DisplayNameFor(model => model.PhamVi)
         </dt>
 
         <dd>
             @Html.DisplayFor(model => model.PhamVi)
         </dd>
-        <hr />
-        <h1>Bình luận</h1>
-        <div >
-            <div class="comments">
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TrangThai1.TinhTrang)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TrangThai1.TinhTrang)
+        </dd>
+    </dl>
+    <hr />
+    <h1>Bình luận</h1>
+    <div>
+        <div class="comments">
             @{
                 if (Model.BinhLuans.ToList().Count != 0)
                 {
@@ -85,39 +86,34 @@
                     }
                 }
             }
-            </div>
-            
-            <div class="container">
-                <div class="be-comment-block">
-                    <h1 class="comments-title">Comments (3)</h1>
-                    
-                    
-                    <form class="form-block">
-                        <div class="row">
-                            <div class="col-12" style="width:auto">
-                                <div class="form-group" s>
-                                    <textarea class="form-input" required="" placeholder="Your text"></textarea>            
-                                    <a class="btn btn-primary pull-right btn-add-comment" data-id="@Model.MaCV">submit</a>
-                                </div>
-                                
-                            </div>
-                            
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </divclass="comments">
-        
+        </div>
 
-    </dl>
-</div>
+        <div class="container">
+            <div class="be-comment-block">
+                <h1 class="comments-title">Comments (3)</h1>
+
+
+                <form class="form-block">
+                    <div class="row">
+                        <div class="col-12" style="width:auto">
+                            <div class="form-group" s>
+                                <textarea class="form-input" required="" placeholder="Your text"></textarea>
+                                <a class="btn btn-primary pull-right btn-add-comment" data-id="@Model.MaCV">submit</a>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.MaCV }) |
     @Html.ActionLink("Back to List", "Index")
-
 </p>
+
 @section scripts{
     <script src="~/ajax/BinhLuan.js"></script>
 }
-
-    

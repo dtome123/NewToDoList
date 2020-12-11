@@ -11,5 +11,6 @@ namespace NewToDoList.Models
         public string File { get; set; }
         public long Size { get; set; }
         public string Type { get; set; }
+        public string nv { get; set; }
     }
 }

@@ -1,13 +1,11 @@
 ﻿@model IEnumerable<NewToDoList.Models.NhanVien>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Search";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Danh sách nhân viên</h2>
-<!-- Topbar Search -->
-
+<h2>@ViewBag.SearchResult</h2>
 <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search" action="Search" method="get">
     <div class="input-group">
         <input type="text" class="form-control bg-light border-0 small" placeholder="Nhập tên hoặc mã nhân viên..."
@@ -19,13 +17,9 @@
         </div>
     </div>
 </form>
-
-<!-- Topbar Navbar -->
-<div style="margin-top:20px">
-    <p>
-        @Html.ActionLink("Tạo mới", "Create")
-    </p>
-</div>
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
 <table class="table">
     <tr>
         <th>
@@ -36,9 +30,6 @@
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Email)
-        </th>
-        <th style="display:none">
-            @Html.DisplayNameFor(model => model.Password)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.TrangThai)
@@ -62,9 +53,6 @@
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Email)
-        </td>
-        <td style="display:none">
-            @Html.HiddenFor(modelItem => item.Password)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.TrangThai)

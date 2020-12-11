@@ -27,7 +27,7 @@
     <Property Name="TieuDe" Type="nvarchar" MaxLength="100" Nullable="false" />
     <Property Name="NgayBatDau" Type="datetime" Nullable="false" />
     <Property Name="NgayKetKhuc" Type="datetime" Nullable="false" />
-    <Property Name="TrangThai" Type="int" Nullable="false" />
+    <Property Name="TrangThai" Type="varchar" MaxLength="4" Nullable="false" />
     <Property Name="PhamVi" Type="nvarchar" MaxLength="50" Nullable="false" />
   </EntityType>
   <EntityType Name="log">
@@ -38,6 +38,7 @@
     <Property Name="MaNV" Type="int" Nullable="false" />
     <Property Name="HoatDong" Type="nvarchar" MaxLength="20" Nullable="false" />
     <Property Name="Bang" Type="nvarchar" MaxLength="20" Nullable="false" />
+    <Property Name="ThoiGian" Type="datetime" Nullable="false" />
   </EntityType>
   <EntityType Name="NhanVien">
     <Key>
@@ -47,7 +48,7 @@
     <Property Name="HoTen" Type="nvarchar" MaxLength="30" Nullable="false" />
     <Property Name="NgaySinh" Type="datetime" Nullable="false" />
     <Property Name="Email" Type="varchar" MaxLength="30" Nullable="false" />
-    <Property Name="Password" Type="varchar" MaxLength="30" Nullable="false" />
+    <Property Name="Password" Type="varchar" MaxLength="70" Nullable="false" />
     <Property Name="TrangThai" Type="int" Nullable="false" />
     <Property Name="ChucVu" Type="nvarchar" MaxLength="20" Nullable="false" />
     <Property Name="Quyen" Type="varchar" MaxLength="3" Nullable="false" />
@@ -135,6 +136,18 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="Cv_fk_tt">
+    <End Role="TrangThai" Type="Self.TrangThai" Multiplicity="1" />
+    <End Role="CongViec" Type="Self.CongViec" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TrangThai">
+        <PropertyRef Name="Ma" />
+      </Principal>
+      <Dependent Role="CongViec">
+        <PropertyRef Name="TrangThai" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="fk_log_manv">
     <End Role="NhanVien" Type="Self.NhanVien" Multiplicity="1" />
     <End Role="log" Type="Self.log" Multiplicity="*" />
@@ -183,6 +196,11 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Function Name="SaveLog" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="manv" Type="int" Mode="In" />
+    <Parameter Name="HoatDong" Type="nvarchar" Mode="In" />
+    <Parameter Name="bang" Type="nvarchar" Mode="In" />
+  </Function>
   <EntityContainer Name="QLCVModelStoreContainer">
     <EntitySet Name="BinhLuan" EntityType="Self.BinhLuan" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="ChiTietCV_NV" EntityType="Self.ChiTietCV_NV" Schema="dbo" store:Type="Tables" />
@@ -211,6 +229,10 @@
     <AssociationSet Name="CtCvTT_fk_tt" Association="Self.CtCvTT_fk_tt">
       <End Role="TrangThai" EntitySet="TrangThai" />
       <End Role="ChiTietCV_NV" EntitySet="ChiTietCV_NV" />
+    </AssociationSet>
+    <AssociationSet Name="Cv_fk_tt" Association="Self.Cv_fk_tt">
+      <End Role="TrangThai" EntitySet="TrangThai" />
+      <End Role="CongViec" EntitySet="CongViec" />
     </AssociationSet>
     <AssociationSet Name="fk_log_manv" Association="Self.fk_log_manv">
       <End Role="NhanVien" EntitySet="NhanVien" />

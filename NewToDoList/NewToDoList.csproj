@@ -35,6 +35,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -2004,6 +2005,7 @@
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="code\CustomMembershipProvider.cs" />
+    <Compile Include="code\MD5.cs" />
     <Compile Include="code\SessionHelper.cs" />
     <Compile Include="code\UserSession.cs" />
     <Compile Include="Controllers\AccountController.cs" />
@@ -2013,6 +2015,7 @@
     <Compile Include="Controllers\FileController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
+    <Compile Include="Controllers\logsController.cs" />
     <Compile Include="Controllers\NhanViensController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -2253,6 +2256,10 @@
     <Content Include="Views\ChiTietCV_NV\Edit.cshtml" />
     <Content Include="Views\ChiTietCV_NV\Index.cshtml" />
     <Content Include="Views\File\Index.cshtml" />
+    <Content Include="Views\NhanViens\Search.cshtml" />
+    <Content Include="Views\logs\Index.cshtml" />
+    <Content Include="Views\logs\Details.cshtml" />
+    <Content Include="Views\logs\Search.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

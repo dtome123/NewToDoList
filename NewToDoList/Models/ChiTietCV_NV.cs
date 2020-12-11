@@ -18,8 +18,8 @@ namespace NewToDoList.Models
         public int MaCV { get; set; }
         public string TrangThai { get; set; }
     
+        public virtual TrangThai TrangThai1 { get; set; }
         public virtual CongViec CongViec { get; set; }
         public virtual NhanVien NhanVien { get; set; }
-        public virtual TrangThai TrangThai1 { get; set; }
     }
 }

@@ -26,13 +26,14 @@ namespace NewToDoList.Models
         public string TieuDe { get; set; }
         public System.DateTime NgayBatDau { get; set; }
         public System.DateTime NgayKetKhuc { get; set; }
-        public int TrangThai { get; set; }
+        public string TrangThai { get; set; }
         public string PhamVi { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<BinhLuan> BinhLuans { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ChiTietCV_NV> ChiTietCV_NV { get; set; }
+        public virtual TrangThai TrangThai1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TapTin> TapTins { get; set; }
     }
