@@ -6,14 +6,21 @@
 }
 
 <h2>Hoạt động</h2>
-<form action="Search" method="get">
-    <p>
 
-        <span>Từ: <input type="date" name="NDB"/></span>
-        <span>Đến: <input type="date" name="NKT" /></span>
-        <input type="submit" />
-    </p>
-</form>
+
+
+    @using (Html.BeginForm("Search", "logs", FormMethod.Get))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true, "", new { @class = "alert alert-danger" })
+        <p>
+            <span>Từ: <input type="date" name="NBD" /></span>
+            <span>Đến: <input type="date" name="NKT" /></span>
+            <input type="submit" />
+        </p>
+    }
+    
+
 
 <table id="table_logs" class="display">
     <thead>

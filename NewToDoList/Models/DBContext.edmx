@@ -41,7 +41,7 @@
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="MaNV" Type="int" Nullable="false" />
-          <Property Name="HoatDong" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="HoatDong" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="Bang" Type="nvarchar" MaxLength="20" Nullable="false" />
           <Property Name="ThoiGian" Type="datetime" Nullable="false" />
         </EntityType>
@@ -514,7 +514,7 @@
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="MaNV" Type="Int32" Nullable="false" />
-          <Property Name="HoatDong" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="HoatDong" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="Bang" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="ThoiGian" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="NhanVien" Relationship="QLCVModel.fk_log_manv" FromRole="log" ToRole="NhanVien" />

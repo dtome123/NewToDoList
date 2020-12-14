@@ -4,7 +4,7 @@
 @{ 
     if (SessionHelper.GetSession() == null)
     {
-        Response.Redirect("/Login/Index", false);
+        Response.Redirect("/Login/Index", true);
     }
 }
 <!DOCTYPE html>

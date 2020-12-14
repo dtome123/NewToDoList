@@ -36,7 +36,7 @@
     </Key>
     <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="MaNV" Type="int" Nullable="false" />
-    <Property Name="HoatDong" Type="nvarchar" MaxLength="20" Nullable="false" />
+    <Property Name="HoatDong" Type="nvarchar" MaxLength="100" Nullable="false" />
     <Property Name="Bang" Type="nvarchar" MaxLength="20" Nullable="false" />
     <Property Name="ThoiGian" Type="datetime" Nullable="false" />
   </EntityType>

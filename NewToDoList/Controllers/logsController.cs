@@ -17,17 +17,29 @@ namespace NewToDoList.Controllers
         // GET: logs
         public ActionResult Index()
         {
-            var logs = db.logs.OrderByDescending(c=>c.ThoiGian).Include(l => l.NhanVien);
+            var logs = db.logs.OrderByDescending(c=>c.id).Include(l => l.NhanVien);
             return View(logs.ToList());
         }
         //search
         [HttpGet]
         public ActionResult Search(string NBD, string NKT)
         {
-            DateTime bd = Convert.ToDateTime(NBD);
-            DateTime kt = Convert.ToDateTime(NKT);
-            var logs = db.logs.Where(c=>DateTime.Compare(c.ThoiGian,bd)>=0 && DateTime.Compare(c.ThoiGian, kt) <= 0).OrderByDescending(c => c.ThoiGian.Date).Include(l => l.NhanVien);
-            return View(logs.ToList());
+                DateTime bd = Convert.ToDateTime(NBD);
+                DateTime kt = Convert.ToDateTime(NKT);
+                if (bd.CompareTo(kt) > 0)
+                {
+                    ViewBag.error="Ngày bắt đầu phải trước ngày kết thúc";
+                    return View(db.logs.ToList());
+                }
+                var logs = db.logs.Where(c => DateTime.Compare(c.ThoiGian, bd) >= 0 && DateTime.Compare(c.ThoiGian, kt) <= 0).OrderByDescending(c => c.id).Include(l => l.NhanVien);
+                if (logs == null)
+                {
+                    ViewBag.error = "Không tìm thấy";
+                    return View(db.logs.ToList());
+                }
+                return View(logs.ToList());
+            
+
         }
         // GET: logs/Details/5
         public ActionResult Details(int? id)

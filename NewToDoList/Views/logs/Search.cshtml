@@ -5,16 +5,16 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Search</h2>
-
-<form action="Search" method="get">
+<h2>Hoạt động</h2>
+@using (Html.BeginForm("Search", "logs", FormMethod.Get))
+{
+   
     <p>
-
-        <span>Từ: <input type="date" name="NDB" /></span>
+        <span>Từ: <input type="date" name="NBD" /></span>
         <span>Đến: <input type="date" name="NKT" /></span>
         <input type="submit" />
     </p>
-</form>
+}
 
 <table id="table_logs" class="display">
     <thead>
@@ -45,7 +45,8 @@
                 <td>@Html.DisplayFor(modelItem => item.Bang)</td>
                 <td>@Html.DisplayFor(modelItem => item.ThoiGian)</td>
                 <td>@Html.DisplayFor(modelItem => item.NhanVien.HoTen)</td>
-                <td>@Html.ActionLink("Details", "Details", new { id = item.id })</td>
+                <td>@Html.ActionLink("Details", "Details", new { id = item.id }) |</td>
+
             </tr>
         }
     </tbody>

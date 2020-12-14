@@ -254,7 +254,7 @@
     </Key>
     <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="MaNV" Type="Int32" Nullable="false" />
-    <Property Name="HoatDong" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="HoatDong" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
     <Property Name="Bang" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
     <Property Name="ThoiGian" Type="DateTime" Nullable="false" Precision="3" />
     <NavigationProperty Name="NhanVien" Relationship="QLCVModel.fk_log_manv" FromRole="log" ToRole="NhanVien" />
